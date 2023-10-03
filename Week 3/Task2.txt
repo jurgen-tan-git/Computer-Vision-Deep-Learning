@@ -1,0 +1,3 @@
+Standard Setting Accuracy: 0.7036659877800407
+Setting 1 Accuracy: 0.3421588594704684
+Setting 2 Accuracy: 0.4816700610997963

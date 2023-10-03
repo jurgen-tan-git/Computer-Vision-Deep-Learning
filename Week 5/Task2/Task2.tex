@@ -1,0 +1,30 @@
+\documentclass{article}
+\usepackage{amsmath}
+
+\begin{document}
+
+\section*{Problem 2.1: Expected Zero-One-Loss}
+The expected zero-one-loss is given by:
+\begin{align*}
+E(x, y) & \sim P[I[f_0(x) \neq y]] \\
+& = P[Y = +1] \cdot P[f_0(x) \neq +1 | Y = +1] \\
+& \quad + P[Y = -1] \cdot P[f_0(x) \neq -1 | Y = -1] \\
+& = p^+ \cdot 0.5 + (1 - p^+) \cdot 0.5 \\
+& = 0.5
+\end{align*}
+So, the expected zero-one-loss for $f_0(x)$ is 0.5.
+
+\section*{Problem 2.2: Probability of Zero Training Loss}
+The probability of zero training loss with $N$ samples is given by:
+\begin{align*}
+P(\text{Zero training loss}) & = \left[P(X(1) < 0 | Y = +1)\right]^{N/2} \cdot \left[P(X(1) \geq 0 | Y = +1)\right]^{N/2} \\
+& \quad \cdot \left[P(X(1) < 0 | Y = -1)\right]^{N/2} \cdot \left[P(X(1) \geq 0 | Y = -1)\right]^{N/2} \\
+& = (0.5^{N/2}) \cdot (0.5^{N/2}) \cdot (0.5^{N/2}) \cdot (0.5^{N/2}) \\
+& = 0.25^N
+\end{align*}
+So, the probability of zero training loss with $N$ samples is $0.25^N$.
+
+\section*{Problem 2.3: Evolution of Probability with Increasing $N$}
+As $N$ increases to infinity, the probability of zero training loss, $P(\text{Zero training loss})$, approaches zero. This is because as $N$ becomes very large, the probability of all the samples satisfying the conditions for zero training loss becomes extremely low, and it becomes increasingly unlikely to obtain zero training loss as $N$ goes to infinity.
+
+\end{document}

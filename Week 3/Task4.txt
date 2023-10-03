@@ -1,0 +1,1 @@
+Five Crop Accuracy: 0.6948453608247422
