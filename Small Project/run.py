@@ -187,40 +187,42 @@ if __name__ == '__main__':
     
     dataloaders = util.createDataLoaders(train_ds, val_ds, test_ds)
     
-    device = torch.device("mps")
-    model = ResNet(num_classes=num_classes, weights=ResNet18_Weights.DEFAULT).to(device)
+    print(y_test[:10])
     
-    epochs = 10
-    learning_rates = [0.1, 0.01, 0.001]
-    best_hyperparameter= None
-    weights_chosen = None
-    bestmeasure = None
-    loss = torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction='mean')
+    # device = torch.device("mps")
+    # model = ResNet(num_classes=num_classes, weights=ResNet18_Weights.DEFAULT).to(device)
     
-    for lr in learning_rates:
-        optimizer = optim.SGD(params=model.parameters(), lr=lr, momentum=0.9) # which parameters to optimize during training?
-        _, best_perfmeasure, bestweights,  = util.train_modelcv(dataloader_cvtrain = dataloaders['train'],
-                                                                dataloader_cvtest = dataloaders['val'] ,
-                                                                model = model,
-                                                                criterion = loss, 
-                                                                optimizer = optimizer, 
-                                                                scheduler = None, 
-                                                                num_epochs = epochs, 
-                                                                device = device,
-                                                                lr = lr)
-        if best_hyperparameter is None:
-            best_hyperparameter = lr
-            weights_chosen = bestweights
-            bestmeasure = best_perfmeasure
-        elif best_perfmeasure > bestmeasure:
-            best_hyperparameter = lr
-            weights_chosen = bestweights
-            bestmeasure = best_perfmeasure
+    # epochs = 10
+    # learning_rates = [0.1, 0.01, 0.001]
+    # best_hyperparameter= None
+    # weights_chosen = None
+    # bestmeasure = None
+    # loss = torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction='mean')
+    
+    # for lr in learning_rates:
+    #     optimizer = optim.SGD(params=model.parameters(), lr=lr, momentum=0.9) # which parameters to optimize during training?
+    #     _, best_perfmeasure, bestweights,  = util.train_modelcv(dataloader_cvtrain = dataloaders['train'],
+    #                                                             dataloader_cvtest = dataloaders['val'] ,
+    #                                                             model = model,
+    #                                                             criterion = loss, 
+    #                                                             optimizer = optimizer, 
+    #                                                             scheduler = None, 
+    #                                                             num_epochs = epochs, 
+    #                                                             device = device,
+    #                                                             lr = lr)
+    #     if best_hyperparameter is None:
+    #         best_hyperparameter = lr
+    #         weights_chosen = bestweights
+    #         bestmeasure = best_perfmeasure
+    #     elif best_perfmeasure > bestmeasure:
+    #         best_hyperparameter = lr
+    #         weights_chosen = bestweights
+    #         bestmeasure = best_perfmeasure
 
-    model.load_state_dict(weights_chosen)
+    # model.load_state_dict(weights_chosen)
 
-    accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
-    print('accuracy val',bestmeasure.item())
-    print('accuracy test',accuracy.item()) 
+    # accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
+    # print('accuracy val',bestmeasure.item())
+    # print('accuracy test',accuracy.item()) 
     
     
