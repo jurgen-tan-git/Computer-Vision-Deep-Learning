@@ -36,6 +36,7 @@ class Utils:
             y_val = label_binarizer.transform(y_val).astype(float32)
             y_test = label_binarizer.transform(y_test).astype(float32)
             num_classes = len(label_binarizer.classes_)
+            print(label_binarizer.classes_)
             return X_train, X_val, X_test, y_train, y_val, y_test, num_classes
         
     def getImages(self):
@@ -88,9 +89,7 @@ class Utils:
                 # for computing the accuracy
                 labels = labels.float()
                 _, preds = torch.max(cpuout, 1) # get predicted class 
-                print(preds.shape)
-                print(labels.shape)
-                accuracy =  (  accuracy*datasize + torch.sum(preds == labels) ) / ( datasize + inputs.shape[0])
+                accuracy =  (  accuracy*datasize + self.check(preds, labels) ) / ( datasize + inputs.shape[0])
                     
                 datasize += inputs.shape[0] #update datasize used in accuracy comp
         
@@ -119,17 +118,26 @@ class Utils:
             val_acc_dict[epoch] = measure
             
 
-            print('perfmeasure', measure.item() )
+            print('perfmeasure', measure )
 
             # store current parameters because they are the best or not?
             if measure > best_measure: # > or < depends on higher is better or lower is better?
                 bestweights= model.state_dict()
                 best_measure = measure
                 best_epoch = epoch
-                print('current best', measure.item(), ' at epoch ', best_epoch)
+                print('current best', measure, ' at epoch ', best_epoch)
 
         return best_epoch, best_measure, bestweights
     
+    def check(self, pred, label):
+        count = 0
+        for i in range(len(pred)):
+            if pred[i] == label[i][pred[i]]:
+                count += 1
+            else:
+                pass
+            
+        return count
 
 class CustomImageDataset(Dataset):
     def __init__(self, dir, files, labels, transform=None, random_state=0):
@@ -184,45 +192,43 @@ if __name__ == '__main__':
     train_ds = CustomImageDataset(dir,X_train, y_train, transform=tranform)
     val_ds = CustomImageDataset(dir, X_val, y_val, transform=tranform)
     test_ds = CustomImageDataset(dir, X_test, y_test, transform=tranform)
-    
+
     dataloaders = util.createDataLoaders(train_ds, val_ds, test_ds)
     
-    print(y_test[:10])
+    device = torch.device("cuda:0")
+    model = ResNet(num_classes=num_classes, weights=ResNet18_Weights.DEFAULT).to(device)
     
-    # device = torch.device("mps")
-    # model = ResNet(num_classes=num_classes, weights=ResNet18_Weights.DEFAULT).to(device)
+    epochs = 10
+    learning_rates = [0.1, 0.01, 0.001]
+    best_hyperparameter= None
+    weights_chosen = None
+    bestmeasure = None
+    loss = torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction='mean')
     
-    # epochs = 10
-    # learning_rates = [0.1, 0.01, 0.001]
-    # best_hyperparameter= None
-    # weights_chosen = None
-    # bestmeasure = None
-    # loss = torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction='mean')
-    
-    # for lr in learning_rates:
-    #     optimizer = optim.SGD(params=model.parameters(), lr=lr, momentum=0.9) # which parameters to optimize during training?
-    #     _, best_perfmeasure, bestweights,  = util.train_modelcv(dataloader_cvtrain = dataloaders['train'],
-    #                                                             dataloader_cvtest = dataloaders['val'] ,
-    #                                                             model = model,
-    #                                                             criterion = loss, 
-    #                                                             optimizer = optimizer, 
-    #                                                             scheduler = None, 
-    #                                                             num_epochs = epochs, 
-    #                                                             device = device,
-    #                                                             lr = lr)
-    #     if best_hyperparameter is None:
-    #         best_hyperparameter = lr
-    #         weights_chosen = bestweights
-    #         bestmeasure = best_perfmeasure
-    #     elif best_perfmeasure > bestmeasure:
-    #         best_hyperparameter = lr
-    #         weights_chosen = bestweights
-    #         bestmeasure = best_perfmeasure
+    for lr in learning_rates:
+        optimizer = optim.SGD(params=model.parameters(), lr=lr, momentum=0.9) # which parameters to optimize during training?
+        _, best_perfmeasure, bestweights,  = util.train_modelcv(dataloader_cvtrain = dataloaders['train'],
+                                                                dataloader_cvtest = dataloaders['val'] ,
+                                                                model = model,
+                                                                criterion = loss, 
+                                                                optimizer = optimizer, 
+                                                                scheduler = None, 
+                                                                num_epochs = epochs, 
+                                                                device = device,
+                                                                lr = lr)
+        if best_hyperparameter is None:
+            best_hyperparameter = lr
+            weights_chosen = bestweights
+            bestmeasure = best_perfmeasure
+        elif best_perfmeasure > bestmeasure:
+            best_hyperparameter = lr
+            weights_chosen = bestweights
+            bestmeasure = best_perfmeasure
 
-    # model.load_state_dict(weights_chosen)
+    model.load_state_dict(weights_chosen)
 
-    # accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
-    # print('accuracy val',bestmeasure.item())
-    # print('accuracy test',accuracy.item()) 
+    accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
+    print('accuracy val',bestmeasure.item())
+    print('accuracy test',accuracy.item()) 
     
     
