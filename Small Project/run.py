@@ -132,7 +132,7 @@ class Utils:
     def check(self, pred, label):
         count = 0
         for i in range(len(pred)):
-            if pred[i] == label[i][pred[i]]:
+            if label[i][pred[i]] == 1:
                 count += 1
             else:
                 pass
@@ -177,6 +177,7 @@ class ResNet(torch.nn.Module):
 
     
 if __name__ == '__main__':
+    torch.manual_seed(0)
     dir = './EuroSAT_RGB/EuroSAT_RGB/'
     util = Utils(dir)
     X_train, X_val, X_test, y_train, y_val, y_test, num_classes = util.split_data()
@@ -199,7 +200,7 @@ if __name__ == '__main__':
     model = ResNet(num_classes=num_classes, weights=ResNet18_Weights.DEFAULT).to(device)
     
     epochs = 10
-    learning_rates = [0.1, 0.01, 0.001]
+    learning_rates = [0.1,0.01, 0.001]
     best_hyperparameter= None
     weights_chosen = None
     bestmeasure = None
@@ -228,7 +229,7 @@ if __name__ == '__main__':
     model.load_state_dict(weights_chosen)
 
     accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
-    print('accuracy val',bestmeasure.item())
-    print('accuracy test',accuracy.item()) 
+    print('accuracy val',bestmeasure)
+    print('accuracy test',accuracy) 
     
     
