@@ -45,9 +45,40 @@ class Utils:
     def getImages(self):
         return self.images
     
-    def createDataLoaders(self, train_ds, val_ds, test_ds):
+    def getTransorms(self):
+
+        trans1=transforms.Compose([
+            transforms.Resize(256),
+            transforms.RandomCrop(224),
+            transforms.RandomHorizontalFlip(),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+
+        trans2 = transforms.Compose([
+        transforms.RandomRotation(degrees=10),  # Rotate by up to 10 degrees
+        transforms.RandomResizedCrop(size=(224, 224), scale=(0.9, 1.1)),
+        transforms.RandomHorizontalFlip(),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+
+        trans3 = color_contrast_transforms = transforms.Compose([
+        transforms.ColorJitter(brightness=0.2, contrast=0.2),
+        transforms.ColorJitter(hue=0.1, saturation=0.1),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+        
+        self.transform = [trans1, trans2, trans3]
+        return self.transform
+    
+    def createDataLoaders(self, train_ds, val_ds1, val_ds2, val_ds3, test_ds):
         train = DataLoader(train_ds, batch_size=3, shuffle=True)
-        val = DataLoader(val_ds, batch_size=3, shuffle=True)
+        val1 = DataLoader(val_ds1, batch_size=3, shuffle=True)
+        val2 = DataLoader(val_ds2, batch_size=3, shuffle=True)
+        val3 = DataLoader(val_ds3, batch_size=3, shuffle=True)
+        val = [val1, val2, val3]
         test = DataLoader(test_ds, batch_size=3, shuffle=True)
         return dict(train=train, val=val, test=test)
     
@@ -92,7 +123,7 @@ class Utils:
                 # for computing the accuracy
                 labels = labels.float()
                 _, preds = torch.max(cpuout, 1) # get predicted class 
-                accuracy =  (  accuracy*datasize + self.check(preds, labels) ) / ( datasize + inputs.shape[0])
+                # accuracy =  (  accuracy*datasize + self.check(preds, labels) ) / ( datasize + inputs.shape[0])
                 for i in range(len(labels)):
                     for j in range(len(labels[i])):
                         if labels[i][j] == 1:
@@ -109,8 +140,18 @@ class Utils:
         
         if criterion is None:   
             avgloss = None
-            
-        return accuracy, avgloss
+        total = []
+        with open('./ClassMAP.txt', 'a') as f:
+            for i in range(len(avgprec)):
+                print("Class {} Mean Average Precision: {}".format(i, sum(avgprec[i])/len(avgprec[i])))
+                total.append(sum(avgprec[i])/len(avgprec[i]))
+                f.write("Class {} Mean Average Precision: {}\n".format(i, sum(avgprec[i])/len(avgprec[i])))
+
+            f.write("Total Mean Average Precision: {}\n".format(sum(total)/len(total)))
+            f.close()
+        measure = sum(total)/len(total)
+        print("Total Mean Average Precision: {}".format(measure))
+        return measure, avgloss
 
     def train_modelcv(self, dataloader_cvtrain, dataloader_cvtest ,  model ,  criterion, optimizer, scheduler, num_epochs, device, lr, name):
 
@@ -121,6 +162,11 @@ class Utils:
         val_loss_dict = {}
 
         for epoch in tqdm(range(num_epochs)):
+
+            with open('./ClassMAP.txt', 'a') as f:
+                f.write("Epoch: {}, Learning Rate: {}\n".format(epoch, lr))
+                f.close()
+                
             global avgprec
             avgprec = {}
             print('Epoch {}/{}'.format(epoch, num_epochs - 1))
@@ -129,34 +175,23 @@ class Utils:
             train_loss=self.train_epoch(model,  dataloader_cvtrain,  criterion,  device , optimizer )
             train_loss_dict[epoch] = train_loss
 
-            measure, val_loss = self.evaluate(model, dataloader_cvtest, criterion = criterion, device = device)
-            val_loss_dict[epoch] = val_loss
-            
+            val_aug_loss =[]
+            for val in dataloader_cvtest:
+                with open('./ClassMAP.txt', 'a') as f:
+                    f.write("Augmentation: {}\n".format(dataloader_cvtest.index(val)))
+                    f.close()
+                measure, val_loss = self.evaluate(model, val, criterion = criterion, device = device)
+                val_aug_loss.append(val_loss)
+            val_loss_dict[epoch] = val_aug_loss           
 
-            print('perfmeasure', measure )
 
-            # store current parameters because they are the best or not?
-            if measure > best_measure: # > or < depends on higher is better or lower is better?
+
+        if measure > best_measure:
                 bestweights= model.state_dict()
                 best_measure = measure
                 best_epoch = epoch
                 print('current best', measure, ' at epoch ', best_epoch)
-                print("Writing model losses")
 
-
-
-            total = []
-            with open('./ClassMAP.txt', 'a') as f:
-                f.write("Epoch: {}, Learning Rate: {}\n".format(epoch, lr))
-
-                for i in range(len(avgprec)):
-                    print("Class {} Mean Average Precision: {}".format(i, sum(avgprec[i])/len(avgprec[i])))
-                    total.append(sum(avgprec[i])/len(avgprec[i]))
-                    f.write("Class {} Mean Average Precision: {}\n".format(i, sum(avgprec[i])/len(avgprec[i])))
-
-                f.write("Total Mean Average Precision: {}\n".format(sum(total)/len(total)))
-                f.close()
-            print("Total Mean Average Precision: {}".format(sum(total)/len(total)))
 
         with open('./pkl/' + name + '_train_loss_' + str(lr) +  '.pkl', 'wb') as file:
             dump(train_loss_dict, file)
@@ -219,19 +254,17 @@ if __name__ == '__main__':
     util = Utils(dir)
     X_train, X_val, X_test, y_train, y_val, y_test, num_classes = util.split_data()
     image_dict = util.getImages()
-    tranform = transforms.Compose([
-            transforms.Resize(256),
-            transforms.RandomCrop(224),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-        ])
+    tranform = util.getTransorms()
     
-    train_ds = CustomImageDataset(dir,X_train, y_train, transform=tranform)
-    val_ds = CustomImageDataset(dir, X_val, y_val, transform=tranform)
-    test_ds = CustomImageDataset(dir, X_test, y_test, transform=tranform)
+    train_ds = CustomImageDataset(dir,X_train, y_train, transform=tranform[0])\
+    
+    val_ds1 = CustomImageDataset(dir, X_val, y_val, transform=tranform[0])
+    val_ds2 = CustomImageDataset(dir, X_val, y_val, transform=tranform[1])
+    val_ds3 = CustomImageDataset(dir, X_val, y_val, transform=tranform[2])
 
-    dataloaders = util.createDataLoaders(train_ds, val_ds, test_ds)
+    test_ds = CustomImageDataset(dir, X_test, y_test, transform=tranform[0])
+
+    dataloaders = util.createDataLoaders(train_ds, val_ds1, val_ds2, val_ds3, test_ds)
     
     device = torch.device("cuda:0")
     model = Model(num_classes=num_classes, weights=ResNet50_Weights.DEFAULT).to(device)
@@ -268,6 +301,9 @@ if __name__ == '__main__':
             bestmeasure = best_perfmeasure
 
     model.load_state_dict(weights_chosen)
+    print('best hyperparameter', best_hyperparameter)
+    print('best measure', bestmeasure)
+
 
     accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
     print('accuracy val',bestmeasure)
