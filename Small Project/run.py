@@ -4,13 +4,15 @@ from numpy import float32
 from torch.utils.data import Dataset
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
-from torchvision.models import resnet18, ResNet18_Weights
+from torchvision.models import resnet50, ResNet50_Weights
 from torch.utils.data import DataLoader
 from torchvision import transforms
 import torch
 import torch.optim as optim
 from pickle import dump
 from tqdm.auto import tqdm
+from sklearn.metrics import average_precision_score
+from efficientnet_pytorch import EfficientNet
 
 class Utils:
     def __init__(self, dir) -> None:
@@ -37,6 +39,7 @@ class Utils:
             y_test = label_binarizer.transform(y_test).astype(float32)
             num_classes = len(label_binarizer.classes_)
             print(label_binarizer.classes_)
+
             return X_train, X_val, X_test, y_train, y_val, y_test, num_classes
         
     def getImages(self):
@@ -90,6 +93,17 @@ class Utils:
                 labels = labels.float()
                 _, preds = torch.max(cpuout, 1) # get predicted class 
                 accuracy =  (  accuracy*datasize + self.check(preds, labels) ) / ( datasize + inputs.shape[0])
+                for i in range(len(labels)):
+                    for j in range(len(labels[i])):
+                        if labels[i][j] == 1:
+                            class_pred = j
+                    if class_pred not in avgprec:
+                        avgprec[class_pred] = list()
+                        avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
+                    else:
+                        avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
+
+
                     
                 datasize += inputs.shape[0] #update datasize used in accuracy comp
         
@@ -98,15 +112,17 @@ class Utils:
             
         return accuracy, avgloss
 
-    def train_modelcv(self, dataloader_cvtrain, dataloader_cvtest ,  model ,  criterion, optimizer, scheduler, num_epochs, device, lr):
+    def train_modelcv(self, dataloader_cvtrain, dataloader_cvtest ,  model ,  criterion, optimizer, scheduler, num_epochs, device, lr, name):
+
 
         best_measure = 0
         best_epoch =-1
         train_loss_dict = {}
         val_loss_dict = {}
-        val_acc_dict = {}
 
         for epoch in tqdm(range(num_epochs)):
+            global avgprec
+            avgprec = {}
             print('Epoch {}/{}'.format(epoch, num_epochs - 1))
             print('-' * 10)
 
@@ -115,7 +131,6 @@ class Utils:
 
             measure, val_loss = self.evaluate(model, dataloader_cvtest, criterion = criterion, device = device)
             val_loss_dict[epoch] = val_loss
-            val_acc_dict[epoch] = measure
             
 
             print('perfmeasure', measure )
@@ -126,6 +141,28 @@ class Utils:
                 best_measure = measure
                 best_epoch = epoch
                 print('current best', measure, ' at epoch ', best_epoch)
+                print("Writing model losses")
+
+
+
+            total = []
+            with open('./ClassMAP.txt', 'a') as f:
+                f.write("Epoch: {}, Learning Rate: {}\n".format(epoch, lr))
+
+                for i in range(len(avgprec)):
+                    print("Class {} Mean Average Precision: {}".format(i, sum(avgprec[i])/len(avgprec[i])))
+                    total.append(sum(avgprec[i])/len(avgprec[i]))
+                    f.write("Class {} Mean Average Precision: {}\n".format(i, sum(avgprec[i])/len(avgprec[i])))
+
+                f.write("Total Mean Average Precision: {}\n".format(sum(total)/len(total)))
+                f.close()
+            print("Total Mean Average Precision: {}".format(sum(total)/len(total)))
+
+        with open('./pkl/' + name + '_train_loss_' + str(lr) +  '.pkl', 'wb') as file:
+            dump(train_loss_dict, file)
+
+        with open('./pkl/' + name + '_val_loss_' + str(lr) +  '.pkl', 'wb') as file:
+            dump(val_loss_dict, file)
 
         return best_epoch, best_measure, bestweights
     
@@ -161,11 +198,11 @@ class CustomImageDataset(Dataset):
         return image, self.labels[idx]
 
 
-class ResNet(torch.nn.Module):
+class Model(torch.nn.Module):
     def __init__(self, num_classes, weights=None):
-        super(ResNet, self).__init__()
-        self.model = resnet18(weights=weights)  # Load the pre-trained ResNet-50 model
-
+        super(Model, self).__init__()
+        self.model = resnet50(weights=weights)  # Load the pre-trained ResNet-50 model
+        
         # Modify the final fully connected layer (fc) for your custom classification task
         num_features = self.model.fc.in_features  # Get the number of input features to the final layer
         self.model.fc = torch.nn.Linear(num_features, num_classes)
@@ -197,9 +234,12 @@ if __name__ == '__main__':
     dataloaders = util.createDataLoaders(train_ds, val_ds, test_ds)
     
     device = torch.device("cuda:0")
-    model = ResNet(num_classes=num_classes, weights=ResNet18_Weights.DEFAULT).to(device)
+    model = Model(num_classes=num_classes, weights=ResNet50_Weights.DEFAULT).to(device)
     
-    epochs = 10
+    with open('./ClassMAP.txt', 'w') as f:
+        f.write("Class Mean Average Precision\n")
+        f.close()
+    epochs = 15
     learning_rates = [0.1,0.01, 0.001]
     best_hyperparameter= None
     weights_chosen = None
@@ -216,7 +256,8 @@ if __name__ == '__main__':
                                                                 scheduler = None, 
                                                                 num_epochs = epochs, 
                                                                 device = device,
-                                                                lr = lr)
+                                                                lr = lr,
+                                                                name='resnet50')
         if best_hyperparameter is None:
             best_hyperparameter = lr
             weights_chosen = bestweights
