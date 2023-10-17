@@ -1,27 +1,21 @@
 import os
-from PIL import Image
-from numpy import float32
-from torch.utils.data import Dataset
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import LabelBinarizer
-from torchvision.models import resnet50, ResNet50_Weights
-from torch.utils.data import DataLoader
 from torchvision import transforms
-import torch
-import torch.optim as optim
 from pickle import dump
 from tqdm.auto import tqdm
+from numpy import float32
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelBinarizer
+from torch.utils.data import DataLoader
 from sklearn.metrics import average_precision_score
-from efficientnet_pytorch import EfficientNet
 
 class Utils:
     def __init__(self, dir) -> None:
         self.dir = dir
         self.images = {}
         
-    def split_data(self, test_size=0.2, val_size=0.2, random_state=0):
-            for folder in os.listdir(dir):
-                for file in os.listdir(dir + folder):
+    def split_data(self, test_size=0.2, val_size=0.2, random_state=0,multilabel=False):
+            for folder in os.listdir(self.dir):
+                for file in os.listdir(self.dir + folder):
                     self.images[file] = folder
                     
             # Split the data into train and test sets
@@ -40,7 +34,25 @@ class Utils:
             num_classes = len(label_binarizer.classes_)
             print(label_binarizer.classes_)
 
+            if multilabel == True:
+                y_train = self.multilabel(y_train)
+                y_val = self.multilabel(y_val)
+                y_test = self.multilabel(y_test)
+
             return X_train, X_val, X_test, y_train, y_val, y_test, num_classes
+    
+    def multilabel(self, label):
+        for i in range(len(label)):
+            if label[i][0] == 1 or label[i][6] ==1:
+                label[i][6] = 1
+                label[i][0] = 1
+
+            if label[i][1] == 1:
+                label[i][2] = 1
+        return label
+        
+        
+
         
     def getImages(self):
         return self.images
@@ -193,10 +205,10 @@ class Utils:
                 print('current best', measure, ' at epoch ', best_epoch)
 
 
-        with open('./pkl/' + name + '_train_loss_' + str(lr) +  '.pkl', 'wb') as file:
+        with open('./pkl/Task1_' + name + '_train_loss_' + str(lr) +  '.pkl', 'wb') as file:
             dump(train_loss_dict, file)
 
-        with open('./pkl/' + name + '_val_loss_' + str(lr) +  '.pkl', 'wb') as file:
+        with open('./pkl/Task1_' + name + '_val_loss_' + str(lr) +  '.pkl', 'wb') as file:
             dump(val_loss_dict, file)
 
         return best_epoch, best_measure, bestweights
@@ -210,103 +222,3 @@ class Utils:
                 pass
             
         return count
-
-class CustomImageDataset(Dataset):
-    def __init__(self, dir, files, labels, transform=None, random_state=0):
-        self.dir = dir
-        self.files = files
-        self.image_dict = image_dict
-        self.transform = transform
-        self.labels = labels
-        
-    def __len__(self):
-        return len(self.files)
-
-    def __getitem__(self, idx):
-        img_name = os.path.join(self.dir, self.image_dict[self.files[idx]])
-        img_name = os.path.join(img_name, self.files[idx])
-        image = Image.open(img_name)
-
-        if self.transform:
-            image = self.transform(image)
-
-        return image, self.labels[idx]
-
-
-class Model(torch.nn.Module):
-    def __init__(self, num_classes, weights=None):
-        super(Model, self).__init__()
-        self.model = resnet50(weights=weights)  # Load the pre-trained ResNet-50 model
-        
-        # Modify the final fully connected layer (fc) for your custom classification task
-        num_features = self.model.fc.in_features  # Get the number of input features to the final layer
-        self.model.fc = torch.nn.Linear(num_features, num_classes)
-
-    def forward(self, x):
-        x = self.model(x)
-        return x
-
-
-    
-if __name__ == '__main__':
-    torch.manual_seed(0)
-    dir = './EuroSAT_RGB/EuroSAT_RGB/'
-    util = Utils(dir)
-    X_train, X_val, X_test, y_train, y_val, y_test, num_classes = util.split_data()
-    image_dict = util.getImages()
-    tranform = util.getTransorms()
-    
-    train_ds = CustomImageDataset(dir,X_train, y_train, transform=tranform[0])\
-    
-    val_ds1 = CustomImageDataset(dir, X_val, y_val, transform=tranform[0])
-    val_ds2 = CustomImageDataset(dir, X_val, y_val, transform=tranform[1])
-    val_ds3 = CustomImageDataset(dir, X_val, y_val, transform=tranform[2])
-
-    test_ds = CustomImageDataset(dir, X_test, y_test, transform=tranform[0])
-
-    dataloaders = util.createDataLoaders(train_ds, val_ds1, val_ds2, val_ds3, test_ds)
-    
-    device = torch.device("cuda:0")
-    model = Model(num_classes=num_classes, weights=ResNet50_Weights.DEFAULT).to(device)
-    
-    with open('./ClassMAP.txt', 'w') as f:
-        f.write("Class Mean Average Precision\n")
-        f.close()
-    epochs = 15
-    learning_rates = [0.1,0.01, 0.001]
-    best_hyperparameter= None
-    weights_chosen = None
-    bestmeasure = None
-    loss = torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction='mean')
-    
-    for lr in learning_rates:
-        optimizer = optim.SGD(params=model.parameters(), lr=lr, momentum=0.9) # which parameters to optimize during training?
-        _, best_perfmeasure, bestweights,  = util.train_modelcv(dataloader_cvtrain = dataloaders['train'],
-                                                                dataloader_cvtest = dataloaders['val'] ,
-                                                                model = model,
-                                                                criterion = loss, 
-                                                                optimizer = optimizer, 
-                                                                scheduler = None, 
-                                                                num_epochs = epochs, 
-                                                                device = device,
-                                                                lr = lr,
-                                                                name='resnet50')
-        if best_hyperparameter is None:
-            best_hyperparameter = lr
-            weights_chosen = bestweights
-            bestmeasure = best_perfmeasure
-        elif best_perfmeasure > bestmeasure:
-            best_hyperparameter = lr
-            weights_chosen = bestweights
-            bestmeasure = best_perfmeasure
-
-    model.load_state_dict(weights_chosen)
-    print('best hyperparameter', best_hyperparameter)
-    print('best measure', bestmeasure)
-
-
-    accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
-    print('accuracy val',bestmeasure)
-    print('accuracy test',accuracy) 
-    
-    

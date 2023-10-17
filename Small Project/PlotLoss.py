@@ -39,4 +39,4 @@ def plot(train_loss, val_loss, name):
     plt.close()
 
 
-plot('./pkl/resnet50_train_loss_0.01.pkl', './pkl/resnet50_val_loss_0.01.pkl', 'resnet50_0.01.png')
+plot('./pkl/Task1_resnet50_train_loss_0.01.pkl', './pkl/Task1_resnet50_val_loss_0.01.pkl', 'resnet50_0.01.png')
