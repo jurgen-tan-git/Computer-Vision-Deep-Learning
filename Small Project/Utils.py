@@ -7,6 +7,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
 from torch.utils.data import DataLoader
 from sklearn.metrics import average_precision_score
+import torch
+
+torch.manual_seed(0)
 
 class Utils:
     def __init__(self, dir) -> None:
@@ -85,14 +88,31 @@ class Utils:
         self.transform = [trans1, trans2, trans3]
         return self.transform
     
-    def createDataLoaders(self, train_ds, val_ds1, val_ds2, val_ds3, test_ds):
-        train = DataLoader(train_ds, batch_size=3, shuffle=True)
-        val1 = DataLoader(val_ds1, batch_size=3, shuffle=True)
-        val2 = DataLoader(val_ds2, batch_size=3, shuffle=True)
-        val3 = DataLoader(val_ds3, batch_size=3, shuffle=True)
-        val = [val1, val2, val3]
-        test = DataLoader(test_ds, batch_size=3, shuffle=True)
-        return dict(train=train, val=val, test=test)
+    def createDataLoaders(self, train_ds1, val_ds1, test_ds1, train_ds2=None, train_ds3=None, val_ds2=None, val_ds3=None, test_ds2=None, test_ds3=None, batchsize=32):
+
+        if train_ds1 != None and train_ds2 != None and val_ds2 != None and val_ds3 != None:
+            train1 = DataLoader(train_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
+            train2 = DataLoader(train_ds2, batch_size=batchsize, shuffle=True, num_workers=4)
+            train3 = DataLoader(train_ds3, batch_size=batchsize, shuffle=True, num_workers=4)
+
+            val1 = DataLoader(val_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
+            val2 = DataLoader(val_ds2, batch_size=batchsize, shuffle=True, num_workers=4)
+            val3 = DataLoader(val_ds3, batch_size=batchsize, shuffle=True, num_workers=4)
+
+            test1 = DataLoader(test_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
+            test2 = DataLoader(test_ds2, batch_size=batchsize, shuffle=True, num_workers=4)
+            test3 = DataLoader(test_ds3, batch_size=batchsize, shuffle=True, num_workers=4)
+
+            train = [train1, train2, train3]
+            val = [val1, val2, val3]
+            test = [test1, test2, test3]
+
+            return dict(train=train, val=val, test=test)
+        else:
+            train = DataLoader(train_ds1, batch_size=3, shuffle=True)
+            val = DataLoader(val_ds1, batch_size=3, shuffle=True)
+            test = DataLoader(test_ds1, batch_size=3, shuffle=True)
+            return dict(train=train, val=val, test=test)
     
     def train_epoch(self, model, trainloader, criterion, device, optimizer):
         model.train()  
@@ -159,19 +179,21 @@ class Utils:
                 total.append(sum(avgprec[i])/len(avgprec[i]))
                 f.write("Class {} Mean Average Precision: {}\n".format(i, sum(avgprec[i])/len(avgprec[i])))
 
-            f.write("Total Mean Average Precision: {}\n".format(sum(total)/len(total)))
+            f.write("Total Mean Average Precision: {}\n\n".format(sum(total)/len(total)))
             f.close()
         measure = sum(total)/len(total)
         print("Total Mean Average Precision: {}".format(measure))
         return measure, avgloss
 
-    def train_modelcv(self, dataloader_cvtrain, dataloader_cvtest ,  model ,  criterion, optimizer, scheduler, num_epochs, device, lr, name):
+    def train_modelcv(self, dataloader_cvtrain, dataloader_cvtest ,  model ,  criterion, optimizer, scheduler, num_epochs, device, lr, name, multilabel = False):
 
 
         best_measure = 0
         best_epoch =-1
         train_loss_dict = {}
         val_loss_dict = {}
+        train_loss_list = []
+        val_loss_list =[]
 
         for epoch in tqdm(range(num_epochs)):
 
@@ -183,26 +205,32 @@ class Utils:
             avgprec = {}
             print('Epoch {}/{}'.format(epoch, num_epochs - 1))
             print('-' * 10)
+            if multilabel == True:
+                measure, val_loss = self.evaluate(model, dataloader_cvtest, criterion = criterion, device = device)
+                val_loss_list.append(val_loss)
 
-            train_loss=self.train_epoch(model,  dataloader_cvtrain,  criterion,  device , optimizer )
-            train_loss_dict[epoch] = train_loss
+            else:
+                for i in range(3):
+                    with open('./ClassMAP.txt', 'a') as f:
+                        f.write("Augmentation: {}\n".format(i))
+                        f.close()
+                    train_loss=self.train_epoch(model,  dataloader_cvtrain[i],  criterion,  device , optimizer )
+                    train_loss_list.append(train_loss)
+                    measure, val_loss = self.evaluate(model, dataloader_cvtrain[i], criterion = criterion, device = device)
+                    val_loss_list.append(val_loss)
 
-            val_aug_loss =[]
-            for val in dataloader_cvtest:
-                with open('./ClassMAP.txt', 'a') as f:
-                    f.write("Augmentation: {}\n".format(dataloader_cvtest.index(val)))
-                    f.close()
-                measure, val_loss = self.evaluate(model, val, criterion = criterion, device = device)
-                val_aug_loss.append(val_loss)
-            val_loss_dict[epoch] = val_aug_loss           
+                    if measure > best_measure:
+                        bestweights= model.state_dict()
+                        best_measure = measure
+                        best_epoch = epoch
+                        transform_index = i
+                        print('current best', measure, ' at epoch ', best_epoch)
+
+                train_loss_dict[epoch] = train_loss
+                val_loss_dict[epoch] = val_loss
 
 
-
-        if measure > best_measure:
-                bestweights= model.state_dict()
-                best_measure = measure
-                best_epoch = epoch
-                print('current best', measure, ' at epoch ', best_epoch)
+        
 
 
         with open('./pkl/Task1_' + name + '_train_loss_' + str(lr) +  '.pkl', 'wb') as file:
@@ -211,7 +239,7 @@ class Utils:
         with open('./pkl/Task1_' + name + '_val_loss_' + str(lr) +  '.pkl', 'wb') as file:
             dump(val_loss_dict, file)
 
-        return best_epoch, best_measure, bestweights
+        return best_epoch, best_measure, bestweights, transform_index
     
     def check(self, pred, label):
         count = 0
