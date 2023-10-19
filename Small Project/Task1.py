@@ -71,7 +71,7 @@ if __name__ == '__main__':
     device = torch.device("cuda:0")
     
     
-    with open('./ClassMAP.txt', 'w') as f:
+    with open('./Log/Task1_ClassMAP.txt', 'w') as f:
         f.write("Class Mean Average Precision\n")
         f.close()
     epochs = 15
@@ -93,7 +93,7 @@ if __name__ == '__main__':
                                                                 num_epochs = epochs, 
                                                                 device = device,
                                                                 lr = lr,
-                                                                name='resnet50')
+                                                                name='Task1')
         if best_hyperparameter is None:
             best_hyperparameter = lr
             weights_chosen = bestweights
@@ -104,13 +104,14 @@ if __name__ == '__main__':
             bestmeasure = best_perfmeasure
 
     model.load_state_dict(weights_chosen)
-    print('best hyperparameter', best_hyperparameter)
-    print('best measure', bestmeasure)
-    with open('Task1_Model'  +'.pkl', 'wb') as file:
+    
+    with open('./Model/Task1_Model'  +'.pkl', 'wb') as file:
             dump(bestweights, file)
 
 
     accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'][transform_index], criterion = None, device = device)
+    print('best hyperparameter', best_hyperparameter)
+    print("Best Augmentation Index", transform_index)
     print('accuracy val',bestmeasure)
     print('accuracy test',accuracy) 
     

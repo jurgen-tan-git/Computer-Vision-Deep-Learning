@@ -6,7 +6,9 @@ import torch
 import torch.optim as optim
 from Utils import Utils
 from Task1 import CustomImageDataset
+from pickle import dump
 
+torch.manual_seed(0)
 
 class MultiLabelModel(torch.nn.Module):
     def __init__(self, num_classes, weights=None):
@@ -23,13 +25,10 @@ class MultiLabelModel(torch.nn.Module):
 
 
 if __name__ == '__main__':
-    torch.manual_seed(0)
+
     dir = './EuroSAT_RGB/EuroSAT_RGB/'
     util = Utils(dir)
     X_train, X_val, X_test, y_train, y_val, y_test, num_classes = util.split_data(multilabel=True)
-
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    model = MultiLabelModel(num_classes=num_classes, weights=ResNet50_Weights.DEFAULT).to(device)
 
     image_dict = util.getImages()
     tranform = util.getTransorms()
@@ -42,20 +41,22 @@ if __name__ == '__main__':
 
     dataloaders = util.createDataLoaders(train_ds, val_ds, test_ds)
 
+    device = torch.device("cuda:0")
     
-    with open('./ClassMAP.txt', 'w') as f:
+    with open('./Log/Task2_ClassMAP.txt', 'w') as f:
         f.write("Class Mean Average Precision\n")
         f.close()
-    epochs = 15
-    learning_rates = [0.1,0.01, 0.001]
+    epochs = 10
+    learning_rates = [0.1,0.01]
     best_hyperparameter= None
     weights_chosen = None
     bestmeasure = None
     loss = torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction='mean')
     
     for lr in learning_rates:
+        model = MultiLabelModel(num_classes=num_classes, weights=ResNet50_Weights.DEFAULT).to(device)
         optimizer = optim.SGD(params=model.parameters(), lr=lr, momentum=0.9) # which parameters to optimize during training?
-        _, best_perfmeasure, bestweights,  = util.train_modelcv(dataloader_cvtrain = dataloaders['train'],
+        _, best_perfmeasure, bestweights, _  = util.train_modelcv(dataloader_cvtrain = dataloaders['train'],
                                                                 dataloader_cvtest = dataloaders['val'] ,
                                                                 model = model,
                                                                 criterion = loss, 
@@ -64,7 +65,7 @@ if __name__ == '__main__':
                                                                 num_epochs = epochs, 
                                                                 device = device,
                                                                 lr = lr,
-                                                                name='resnet50',
+                                                                name='multilabel-model',
                                                                 multilabel=True)
         if best_hyperparameter is None:
             best_hyperparameter = lr
@@ -76,11 +77,13 @@ if __name__ == '__main__':
             bestmeasure = best_perfmeasure
 
     model.load_state_dict(weights_chosen)
+    
+    with open('./Model/Task2_Model'  +'.pkl', 'wb') as file:
+        dump(bestweights, file)
+        
+    accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
     print('best hyperparameter', best_hyperparameter)
     print('best measure', bestmeasure)
-
-
-    accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
     print('accuracy val',bestmeasure)
     print('accuracy test',accuracy) 
     

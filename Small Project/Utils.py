@@ -109,9 +109,9 @@ class Utils:
 
             return dict(train=train, val=val, test=test)
         else:
-            train = DataLoader(train_ds1, batch_size=3, shuffle=True)
-            val = DataLoader(val_ds1, batch_size=3, shuffle=True)
-            test = DataLoader(test_ds1, batch_size=3, shuffle=True)
+            train = DataLoader(train_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
+            val = DataLoader(val_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
+            test = DataLoader(test_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
             return dict(train=train, val=val, test=test)
     
     def train_epoch(self, model, trainloader, criterion, device, optimizer):
@@ -160,11 +160,11 @@ class Utils:
                     for j in range(len(labels[i])):
                         if labels[i][j] == 1:
                             class_pred = j
-                    if class_pred not in avgprec:
-                        avgprec[class_pred] = list()
-                        avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
+                    if class_pred not in self.avgprec:
+                        self.avgprec[class_pred] = list()
+                        self.avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
                     else:
-                        avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
+                        self.avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
 
 
                     
@@ -173,11 +173,15 @@ class Utils:
         if criterion is None:   
             avgloss = None
         total = []
-        with open('./ClassMAP.txt', 'a') as f:
-            for i in range(len(avgprec)):
-                print("Class {} Mean Average Precision: {}".format(i, sum(avgprec[i])/len(avgprec[i])))
-                total.append(sum(avgprec[i])/len(avgprec[i]))
-                f.write("Class {} Mean Average Precision: {}\n".format(i, sum(avgprec[i])/len(avgprec[i])))
+        print(self.avgprec.keys())
+        with open('./Log/'+ self.name +'_ClassMAP.txt', 'a') as f:
+            for i in range(len(self.avgprec)):
+                try:
+                    print("Class {} Mean Average Precision: {}".format(i, sum(self.avgprec[i])/len(self.avgprec[i])))
+                    total.append(sum(self.avgprec[i])/len(self.avgprec[i]))
+                    f.write("Class {} Mean Average Precision: {}\n".format(i, sum(self.avgprec[i])/len(self.avgprec[i])))
+                except:
+                    pass
 
             f.write("Total Mean Average Precision: {}\n\n".format(sum(total)/len(total)))
             f.close()
@@ -187,37 +191,47 @@ class Utils:
 
     def train_modelcv(self, dataloader_cvtrain, dataloader_cvtest ,  model ,  criterion, optimizer, scheduler, num_epochs, device, lr, name, multilabel = False):
 
-
+        self.name = name
+        
         best_measure = 0
         best_epoch =-1
         train_loss_dict = {}
         val_loss_dict = {}
-        train_loss_list = []
-        val_loss_list =[]
+
 
         for epoch in tqdm(range(num_epochs)):
 
-            with open('./ClassMAP.txt', 'a') as f:
+            with open('./Log/'+ self.name +'_ClassMAP.txt', 'a') as f:
                 f.write("Epoch: {}, Learning Rate: {}\n".format(epoch, lr))
                 f.close()
                 
-            global avgprec
-            avgprec = {}
+            self.avgprec = {}
             print('Epoch {}/{}'.format(epoch, num_epochs - 1))
             print('-' * 10)
             if multilabel == True:
+                train_loss=self.train_epoch(model,  dataloader_cvtrain,  criterion,  device , optimizer )
                 measure, val_loss = self.evaluate(model, dataloader_cvtest, criterion = criterion, device = device)
-                val_loss_list.append(val_loss)
+
+                train_loss_dict[epoch] = train_loss
+                val_loss_dict[epoch] = val_loss
+
+                if measure > best_measure:
+                    bestweights= model.state_dict()
+                    best_measure = measure
+                    best_epoch = epoch
+                    transform_index = None
+                    print('current best', measure, ' at epoch ', best_epoch)
 
             else:
                 for i in range(3):
-                    with open('./ClassMAP.txt', 'a') as f:
+                    with open('./Log/'+ self.name +'_ClassMAP.txt', 'a') as f:
                         f.write("Augmentation: {}\n".format(i))
                         f.close()
                     train_loss=self.train_epoch(model,  dataloader_cvtrain[i],  criterion,  device , optimizer )
-                    train_loss_list.append(train_loss)
                     measure, val_loss = self.evaluate(model, dataloader_cvtrain[i], criterion = criterion, device = device)
-                    val_loss_list.append(val_loss)
+
+                    train_loss_dict[str(epoch) + "A" + str(i)] = train_loss
+                    val_loss_dict[str(epoch) + "A" + str(i)] = val_loss
 
                     if measure > best_measure:
                         bestweights= model.state_dict()
@@ -226,17 +240,11 @@ class Utils:
                         transform_index = i
                         print('current best', measure, ' at epoch ', best_epoch)
 
-                train_loss_dict[epoch] = train_loss
-                val_loss_dict[epoch] = val_loss
-
-
-        
-
-
-        with open('./pkl/Task1_' + name + '_train_loss_' + str(lr) +  '.pkl', 'wb') as file:
+        print("Storing Losses")
+        with open('./pkl/Task1_train_loss_' + str(lr) +  '.pkl', 'wb') as file:
             dump(train_loss_dict, file)
 
-        with open('./pkl/Task1_' + name + '_val_loss_' + str(lr) +  '.pkl', 'wb') as file:
+        with open('./pkl/Task1_val_loss_' + str(lr) +  '.pkl', 'wb') as file:
             dump(val_loss_dict, file)
 
         return best_epoch, best_measure, bestweights, transform_index
