@@ -46,7 +46,7 @@ class Model(torch.nn.Module):
 
     
 if __name__ == '__main__':
-    dir = './EuroSAT_RGB/EuroSAT_RGB/'
+    dir = './EuroSAT_RGB/'
     util = Utils(dir)
     X_train, X_val, X_test, y_train, y_val, y_test, num_classes = util.split_data()
     image_dict = util.getImages()

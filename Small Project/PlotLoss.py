@@ -13,8 +13,8 @@ def Task1plot(train_loss, val_loss, name):
     val_values = []
     
     for i in range(15):
-        train_values.append(train_loss[str(i) + 'A' + str(0)]) # 0 is the first Augmentation
-        val_values.append(val_loss[str(i) + 'A' + str(0)]) # 0 is the first Augmentation
+        train_values.append(train_loss[str(i) + 'A' + str(1)].to('cpu').tolist()) # 0 is the first Augmentation
+        val_values.append(val_loss[str(i) + 'A' + str(1)].to('cpu').tolist()) # 0 is the first Augmentation
     
 
     epochs = range(1, 16)
@@ -65,5 +65,5 @@ def Task2plot(train_loss, val_loss, name):
 
 
 if __name__ == '__main__':
-    # Task1plot('./pkl/Task1_train_loss_0.01.pkl', './pkl/Task1_val_loss_0.01.pkl', 'Task1_0.01.png')
-    # Task2plot('./pkl/multilabel-model_train_loss_0.1.pkl', './pkl/multilabel-model_val_loss_0.1.pkl', 'Task2_0.01.png')
+    Task1plot('./pkl/mutliclass-model_train_loss_0.01.pkl', './pkl/mutliclass-model_val_loss_0.01.pkl', 'Task1_0.01.png')
+    Task2plot('./pkl/multilabel-model_train_loss_0.1.pkl', './pkl/multilabel-model_val_loss_0.1.pkl', 'Task2_0.01.png')

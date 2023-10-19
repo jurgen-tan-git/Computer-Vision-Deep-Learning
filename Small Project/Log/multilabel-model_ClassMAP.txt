@@ -271,3 +271,4 @@ Class 8 Mean Average Precision: 0.20499123292727878
 Class 9 Mean Average Precision: 0.9981701738334858
 Total Mean Average Precision: 0.7268236530532473
 
+Best Hyperparam = 0.1 
