@@ -26,10 +26,10 @@ class MultiLabelModel(torch.nn.Module):
 
 if __name__ == '__main__':
 
-    dir = './EuroSAT_RGB/EuroSAT_RGB/'
+    dir = './EuroSAT_RGB/'
     util = Utils(dir)
     X_train, X_val, X_test, y_train, y_val, y_test, num_classes = util.split_data(multilabel=True)
-
+    print(num_classes)
     image_dict = util.getImages()
     tranform = util.getTransorms()
     
@@ -51,7 +51,7 @@ if __name__ == '__main__':
     best_hyperparameter= None
     weights_chosen = None
     bestmeasure = None
-    loss = torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction='mean')
+    loss = torch.nn.BCEWithLogitsLoss(weight=None, size_average=None, reduce=None, reduction='mean')
     
     for lr in learning_rates:
         model = MultiLabelModel(num_classes=num_classes, weights=ResNet50_Weights.DEFAULT).to(device)
