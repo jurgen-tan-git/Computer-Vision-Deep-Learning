@@ -46,7 +46,7 @@ class Utils:
     
     def multilabel(self, label):
         for i in range(len(label)):
-            if label[i][0] == 1 or label[i][6] ==1:
+            if label[i][0] == 1 or label[i][6] == 1:
                 label[i][6] = 1
                 label[i][0] = 1
 
@@ -109,24 +109,29 @@ class Utils:
 
             return dict(train=train, val=val, test=test)
         else:
-            train = DataLoader(train_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
-            val = DataLoader(val_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
-            test = DataLoader(test_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
+            train = DataLoader(train_ds1, batch_size=batchsize, shuffle=True, num_workers=8)
+            val = DataLoader(val_ds1, batch_size=batchsize, shuffle=True, num_workers=8)
+            test = DataLoader(test_ds1, batch_size=batchsize, shuffle=True, num_workers=8)
             return dict(train=train, val=val, test=test)
     
     def train_epoch(self, model, trainloader, criterion, device, optimizer):
         model.train()  
-
-        for batch_idx, data in enumerate(trainloader):
+        datasize = 0
+        avgloss = 0
+        
+        for _, data in enumerate(trainloader):
             inputs = data[0].to(device)
             labels = data[1].to(device)
 
             optimizer.zero_grad()  
             outputs = model(inputs)
             loss = criterion(outputs, labels)
+            avgloss = ( avgloss*datasize + loss )
+            datasize += inputs.shape[0]
+            avgloss = avgloss/datasize
             loss.backward()  
             optimizer.step()  
-        return loss.item() 
+        return avgloss
 
     def evaluate(self, model, dataloader, criterion, device):
 
@@ -136,11 +141,9 @@ class Utils:
         with torch.no_grad():
         
             datasize = 0
-            accuracy = 0
             avgloss = 0
-            for ctr, data in enumerate(dataloader):
-
-                
+            for _, data in enumerate(dataloader):
+            
                 inputs = data[0].to(device)        
                 outputs = model(inputs)
 
@@ -150,7 +153,9 @@ class Utils:
                 cpuout= outputs.to('cpu')
                 if criterion is not None:
                     curloss = criterion(cpuout, labels)
-                    avgloss = ( avgloss*datasize + curloss ) / ( datasize + inputs.shape[0])
+                    avgloss = ( avgloss*datasize + curloss ) 
+                    datasize += inputs.shape[0] #update datasize used in accuracy comp
+                    avgloss = avgloss/datasize
 
                 # for computing the accuracy
                 labels = labels.float()
@@ -160,11 +165,11 @@ class Utils:
                     for j in range(len(labels[i])):
                         if labels[i][j] == 1:
                             class_pred = j
-                    if class_pred not in self.avgprec:
-                        self.avgprec[class_pred] = list()
-                        self.avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
-                    else:
-                        self.avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
+                            if class_pred not in self.avgprec:
+                                self.avgprec[class_pred] = list()
+                                self.avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
+                            else:
+                                self.avgprec[class_pred].append(average_precision_score(labels[i], cpuout[i]))
 
 
                     
@@ -211,7 +216,7 @@ class Utils:
             if multilabel == True:
                 train_loss=self.train_epoch(model,  dataloader_cvtrain,  criterion,  device , optimizer )
                 measure, val_loss = self.evaluate(model, dataloader_cvtest, criterion = criterion, device = device)
-
+                print("Train loss: {} \n Val loss: {}".format(train_loss, val_loss))
                 train_loss_dict[epoch] = train_loss
                 val_loss_dict[epoch] = val_loss
 
@@ -229,7 +234,7 @@ class Utils:
                         f.close()
                     train_loss=self.train_epoch(model,  dataloader_cvtrain[i],  criterion,  device , optimizer )
                     measure, val_loss = self.evaluate(model, dataloader_cvtrain[i], criterion = criterion, device = device)
-
+                    print("Train loss: {} \n Val loss: {}".format(train_loss, val_loss))
                     train_loss_dict[str(epoch) + "A" + str(i)] = train_loss
                     val_loss_dict[str(epoch) + "A" + str(i)] = val_loss
 
@@ -241,10 +246,10 @@ class Utils:
                         print('current best', measure, ' at epoch ', best_epoch)
 
         print("Storing Losses")
-        with open('./pkl/Task1_train_loss_' + str(lr) +  '.pkl', 'wb') as file:
+        with open('./pkl/' + name +'_train_loss_' + str(lr) +  '.pkl', 'wb') as file:
             dump(train_loss_dict, file)
 
-        with open('./pkl/Task1_val_loss_' + str(lr) +  '.pkl', 'wb') as file:
+        with open('./pkl/' + name + '_val_loss_' + str(lr) +  '.pkl', 'wb') as file:
             dump(val_loss_dict, file)
 
         return best_epoch, best_measure, bestweights, transform_index

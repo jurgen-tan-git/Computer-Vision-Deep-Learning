@@ -79,7 +79,7 @@ if __name__ == '__main__':
     best_hyperparameter= None
     weights_chosen = None
     bestmeasure = None
-    loss = torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction='mean')
+    loss = torch.nn.CrossEntropyLoss()
     
     for lr in learning_rates:
         model = Model(num_classes=num_classes, weights=ResNet50_Weights.DEFAULT).to(device)
@@ -93,7 +93,7 @@ if __name__ == '__main__':
                                                                 num_epochs = epochs, 
                                                                 device = device,
                                                                 lr = lr,
-                                                                name='Task1')
+                                                                name='mutliclass-model')
         if best_hyperparameter is None:
             best_hyperparameter = lr
             weights_chosen = bestweights

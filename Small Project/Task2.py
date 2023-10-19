@@ -7,6 +7,7 @@ import torch.optim as optim
 from Utils import Utils
 from Task1 import CustomImageDataset
 from pickle import dump
+from torchvision import transforms
 
 torch.manual_seed(0)
 
@@ -26,32 +27,38 @@ class MultiLabelModel(torch.nn.Module):
 
 if __name__ == '__main__':
 
-    dir = './EuroSAT_RGB/'
+    dir = './EuroSAT_RGB/EuroSAT_RGB/'
     util = Utils(dir)
     X_train, X_val, X_test, y_train, y_val, y_test, num_classes = util.split_data(multilabel=True)
     print(num_classes)
     image_dict = util.getImages()
     tranform = util.getTransorms()
+
+    test_transform = transforms.Compose([transforms.Resize(256),
+            transforms.RandomCrop(224),
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
+            
     
     train_ds = CustomImageDataset(dir,X_train, y_train, image_dict, transform=tranform[0])
     
     val_ds = CustomImageDataset(dir, X_val, y_val, image_dict, transform=tranform[0])
 
-    test_ds = CustomImageDataset(dir, X_test, y_test, image_dict,  transform=tranform[0])
+    test_ds = CustomImageDataset(dir, X_test, y_test, image_dict,  transform=test_transform)
 
     dataloaders = util.createDataLoaders(train_ds, val_ds, test_ds)
 
     device = torch.device("cuda:0")
     
-    with open('./Log/Task2_ClassMAP.txt', 'w') as f:
+    with open('./Log/multilabel-model_ClassMAP.txt', 'w') as f:
         f.write("Class Mean Average Precision\n")
         f.close()
     epochs = 10
-    learning_rates = [0.1,0.01]
+    learning_rates = [0.1, 0.01]
     best_hyperparameter= None
     weights_chosen = None
     bestmeasure = None
-    loss = torch.nn.BCEWithLogitsLoss(weight=None, size_average=None, reduce=None, reduction='mean')
+    loss = torch.nn.BCEWithLogitsLoss()
     
     for lr in learning_rates:
         model = MultiLabelModel(num_classes=num_classes, weights=ResNet50_Weights.DEFAULT).to(device)
@@ -80,7 +87,7 @@ if __name__ == '__main__':
     
     with open('./Model/Task2_Model'  +'.pkl', 'wb') as file:
         dump(bestweights, file)
-        
+    
     accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
     print('best hyperparameter', best_hyperparameter)
     print('best measure', bestmeasure)

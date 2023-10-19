@@ -35,8 +35,14 @@ def Task1plot(train_loss, val_loss, name):
 
 
 def Task2plot(train_loss, val_loss, name):
-    train_loss = load(open(train_loss, 'rb')).values()
-    val_loss = load(open(val_loss, 'rb')).values()
+    train_loss = load(open(train_loss, 'rb'))
+    val_loss = load(open(val_loss, 'rb'))
+    
+    for i in range(len(train_loss)):
+        train_loss[i] = train_loss[i].to('cpu').tolist()
+        val_loss[i] = val_loss[i].to('cpu').tolist()
+    train_loss = train_loss.values()
+    val_loss = val_loss.values()
 
 
 
@@ -50,12 +56,14 @@ def Task2plot(train_loss, val_loss, name):
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     
+    
     # Save and show the plot
     plt.legend(loc='best')
     plt.savefig(name)
     plt.show()
     plt.close()
 
+
 if __name__ == '__main__':
-    Task1plot('./pkl/Task1_train_loss_0.01.pkl', './pkl/Task1_val_loss_0.01.pkl', 'Task1_0.01.png')
-    Task2plot('./pkl/Task2_multilabel-model_train_loss_0.01.pkl', './pkl/Task2_multilabel-model_val_loss_0.01.pkl', 'Task2_0.01.png')
+    # Task1plot('./pkl/Task1_train_loss_0.01.pkl', './pkl/Task1_val_loss_0.01.pkl', 'Task1_0.01.png')
+    # Task2plot('./pkl/multilabel-model_train_loss_0.1.pkl', './pkl/multilabel-model_val_loss_0.1.pkl', 'Task2_0.01.png')

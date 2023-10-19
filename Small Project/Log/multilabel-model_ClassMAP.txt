@@ -1,0 +1,273 @@
+Class Mean Average Precision
+Epoch: 0, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.9797672134628658
+Class 1 Mean Average Precision: 0.9221305841924388
+Class 2 Mean Average Precision: 0.9377596186584967
+Class 3 Mean Average Precision: 0.17204379704379755
+Class 4 Mean Average Precision: 0.287910251820026
+Class 5 Mean Average Precision: 0.12036512775842081
+Class 6 Mean Average Precision: 0.9797672134628658
+Class 7 Mean Average Precision: 0.25976860441146205
+Class 8 Mean Average Precision: 0.13407711569476324
+Class 9 Mean Average Precision: 0.9984177215189873
+Total Mean Average Precision: 0.5792007248024125
+
+Epoch: 1, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.9838164251207732
+Class 1 Mean Average Precision: 0.9931786941580755
+Class 2 Mean Average Precision: 0.9938968335035752
+Class 3 Mean Average Precision: 0.19645684645684688
+Class 4 Mean Average Precision: 0.6943609022556394
+Class 5 Mean Average Precision: 0.1681087882307398
+Class 6 Mean Average Precision: 0.9838164251207732
+Class 7 Mean Average Precision: 0.6013193156050303
+Class 8 Mean Average Precision: 0.1617190815720234
+Class 9 Mean Average Precision: 0.9989451476793249
+Total Mean Average Precision: 0.6775618459702801
+
+Epoch: 2, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.9816113234591497
+Class 1 Mean Average Precision: 0.9980068728522337
+Class 2 Mean Average Precision: 0.9961355124276473
+Class 3 Mean Average Precision: 0.21835634335634382
+Class 4 Mean Average Precision: 0.7397243107769425
+Class 5 Mean Average Precision: 0.23177869725125863
+Class 6 Mean Average Precision: 0.9816113234591497
+Class 7 Mean Average Precision: 0.8420634920634917
+Class 8 Mean Average Precision: 0.19000933706816106
+Class 9 Mean Average Precision: 0.9975386779184248
+Total Mean Average Precision: 0.7176835890632803
+
+Epoch: 3, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.96615880094141
+Class 1 Mean Average Precision: 0.9987972508591065
+Class 2 Mean Average Precision: 0.9982124616956077
+Class 3 Mean Average Precision: 0.21951659451659492
+Class 4 Mean Average Precision: 0.7719536937582049
+Class 5 Mean Average Precision: 0.27799917731320184
+Class 6 Mean Average Precision: 0.96615880094141
+Class 7 Mean Average Precision: 0.7733044733044732
+Class 8 Mean Average Precision: 0.19556913674560775
+Class 9 Mean Average Precision: 0.9989451476793249
+Total Mean Average Precision: 0.7166615537754942
+
+Epoch: 4, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.9898194599281558
+Class 1 Mean Average Precision: 0.9936426116838487
+Class 2 Mean Average Precision: 0.9932073544433097
+Class 3 Mean Average Precision: 0.24682929682929716
+Class 4 Mean Average Precision: 0.824895572263993
+Class 5 Mean Average Precision: 0.33590422957800997
+Class 6 Mean Average Precision: 0.9898194599281558
+Class 7 Mean Average Precision: 0.7426767676767669
+Class 8 Mean Average Precision: 0.19601370851370922
+Class 9 Mean Average Precision: 0.9985935302390998
+Total Mean Average Precision: 0.7311401991084345
+
+Epoch: 5, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.9908464723682117
+Class 1 Mean Average Precision: 1.0
+Class 2 Mean Average Precision: 0.9958574509136306
+Class 3 Mean Average Precision: 0.24595179595179628
+Class 4 Mean Average Precision: 0.8711361737677528
+Class 5 Mean Average Precision: 0.3637049941927991
+Class 6 Mean Average Precision: 0.9908464723682117
+Class 7 Mean Average Precision: 0.7676046176046172
+Class 8 Mean Average Precision: 0.19794478397419618
+Class 9 Mean Average Precision: 1.0
+Total Mean Average Precision: 0.7423892761141215
+
+Epoch: 6, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.9734065049282443
+Class 1 Mean Average Precision: 1.0
+Class 2 Mean Average Precision: 0.9989785495403473
+Class 3 Mean Average Precision: 0.22712550212550267
+Class 4 Mean Average Precision: 0.7847774197398254
+Class 5 Mean Average Precision: 0.36492329655439404
+Class 6 Mean Average Precision: 0.9734065049282443
+Class 7 Mean Average Precision: 0.7257215007215005
+Class 8 Mean Average Precision: 0.1958099906629323
+Class 9 Mean Average Precision: 1.0
+Total Mean Average Precision: 0.724414926920099
+
+Epoch: 7, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.9903419245810553
+Class 1 Mean Average Precision: 1.0
+Class 2 Mean Average Precision: 0.9967654068777664
+Class 3 Mean Average Precision: 0.2327892827892834
+Class 4 Mean Average Precision: 0.8922305764411026
+Class 5 Mean Average Precision: 0.42137049941927995
+Class 6 Mean Average Precision: 0.9903419245810553
+Class 7 Mean Average Precision: 0.7733972376829518
+Class 8 Mean Average Precision: 0.19591715474068475
+Class 9 Mean Average Precision: 0.9978902953586498
+Total Mean Average Precision: 0.7491044302471829
+
+Epoch: 8, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.9871330360460798
+Class 1 Mean Average Precision: 1.0
+Class 2 Mean Average Precision: 0.9988083077970719
+Class 3 Mean Average Precision: 0.218310518310519
+Class 4 Mean Average Precision: 0.9118629908103592
+Class 5 Mean Average Precision: 0.3661234514130858
+Class 6 Mean Average Precision: 0.9871330360460798
+Class 7 Mean Average Precision: 0.7290610183467324
+Class 8 Mean Average Precision: 0.1980614973262035
+Class 9 Mean Average Precision: 1.0
+Total Mean Average Precision: 0.7396493856096131
+
+Epoch: 9, Learning Rate: 0.1
+Class 0 Mean Average Precision: 0.9891162782467131
+Class 1 Mean Average Precision: 0.9987972508591064
+Class 2 Mean Average Precision: 0.9937521280217911
+Class 3 Mean Average Precision: 0.2341094341094345
+Class 4 Mean Average Precision: 0.9166666666666666
+Class 5 Mean Average Precision: 0.4306112078977929
+Class 6 Mean Average Precision: 0.9891162782467131
+Class 7 Mean Average Precision: 0.7741702741702738
+Class 8 Mean Average Precision: 0.21043841779135938
+Class 9 Mean Average Precision: 1.0
+Total Mean Average Precision: 0.7536777936009851
+
+Epoch: 0, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9335748792270547
+Class 1 Mean Average Precision: 0.7283406971035815
+Class 2 Mean Average Precision: 0.8091541417384137
+Class 3 Mean Average Precision: 0.16696209196209247
+Class 4 Mean Average Precision: 0.2724261049449021
+Class 5 Mean Average Precision: 0.17559281842818478
+Class 6 Mean Average Precision: 0.9335748792270547
+Class 7 Mean Average Precision: 0.36249570535284836
+Class 8 Mean Average Precision: 0.15121063576945978
+Class 9 Mean Average Precision: 0.9989451476793249
+Total Mean Average Precision: 0.5532277101432916
+
+Epoch: 1, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9631085098476416
+Class 1 Mean Average Precision: 0.9819931271477657
+Class 2 Mean Average Precision: 0.9115521182936931
+Class 3 Mean Average Precision: 0.1701327951327956
+Class 4 Mean Average Precision: 0.22071050642479276
+Class 5 Mean Average Precision: 0.1663037166085951
+Class 6 Mean Average Precision: 0.9631085098476416
+Class 7 Mean Average Precision: 0.23699494949494984
+Class 8 Mean Average Precision: 0.16037369493251885
+Class 9 Mean Average Precision: 0.9962025316455696
+Total Mean Average Precision: 0.5770480459375963
+
+Epoch: 2, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9795522110739505
+Class 1 Mean Average Precision: 0.9792783505154635
+Class 2 Mean Average Precision: 0.9388321416411315
+Class 3 Mean Average Precision: 0.157452907452908
+Class 4 Mean Average Precision: 0.2105183593905402
+Class 5 Mean Average Precision: 0.1589309910956256
+Class 6 Mean Average Precision: 0.9795522110739505
+Class 7 Mean Average Precision: 0.2519738198309632
+Class 8 Mean Average Precision: 0.15342076224429196
+Class 9 Mean Average Precision: 1.0
+Total Mean Average Precision: 0.5809511754318826
+
+Epoch: 3, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9707649838084623
+Class 1 Mean Average Precision: 1.0
+Class 2 Mean Average Precision: 0.9828907048008174
+Class 3 Mean Average Precision: 0.16066066066066112
+Class 4 Mean Average Precision: 0.25044456379042895
+Class 5 Mean Average Precision: 0.1645688153310107
+Class 6 Mean Average Precision: 0.9707649838084623
+Class 7 Mean Average Precision: 0.3601568405139835
+Class 8 Mean Average Precision: 0.15421016891605163
+Class 9 Mean Average Precision: 0.9975386779184248
+Total Mean Average Precision: 0.6012000399548303
+
+Epoch: 4, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9745894604590263
+Class 1 Mean Average Precision: 0.9860824742268038
+Class 2 Mean Average Precision: 0.9848484848484853
+Class 3 Mean Average Precision: 0.1589144339144345
+Class 4 Mean Average Precision: 0.3262839638779486
+Class 5 Mean Average Precision: 0.1601226771196286
+Class 6 Mean Average Precision: 0.9745894604590263
+Class 7 Mean Average Precision: 0.5167929292929295
+Class 8 Mean Average Precision: 0.15623143196672643
+Class 9 Mean Average Precision: 0.9985935302390999
+Total Mean Average Precision: 0.623704884640411
+
+Epoch: 5, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9794763408893845
+Class 1 Mean Average Precision: 0.9922336769759448
+Class 2 Mean Average Precision: 0.9827034388832147
+Class 3 Mean Average Precision: 0.16636734136734183
+Class 4 Mean Average Precision: 0.36272626009468095
+Class 5 Mean Average Precision: 0.16971060782036412
+Class 6 Mean Average Precision: 0.9794763408893845
+Class 7 Mean Average Precision: 0.5382292310863743
+Class 8 Mean Average Precision: 0.16731495628554496
+Class 9 Mean Average Precision: 0.9985935302390998
+Total Mean Average Precision: 0.6336831724531334
+
+Epoch: 6, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9842143564969656
+Class 1 Mean Average Precision: 0.9987972508591065
+Class 2 Mean Average Precision: 0.9899557371467486
+Class 3 Mean Average Precision: 0.17547092547092594
+Class 4 Mean Average Precision: 0.3839927198949757
+Class 5 Mean Average Precision: 0.16819710607820404
+Class 6 Mean Average Precision: 0.9842143564969656
+Class 7 Mean Average Precision: 0.6451298701298699
+Class 8 Mean Average Precision: 0.17527268483150898
+Class 9 Mean Average Precision: 1.0
+Total Mean Average Precision: 0.6505245007405271
+
+Epoch: 7, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9868791031834512
+Class 1 Mean Average Precision: 0.9987972508591065
+Class 2 Mean Average Precision: 0.9945522642151856
+Class 3 Mean Average Precision: 0.19326859326859377
+Class 4 Mean Average Precision: 0.40913593507578494
+Class 5 Mean Average Precision: 0.1884497193186222
+Class 6 Mean Average Precision: 0.9868791031834512
+Class 7 Mean Average Precision: 0.7090634233491372
+Class 8 Mean Average Precision: 0.1826086495204148
+Class 9 Mean Average Precision: 0.9989451476793249
+Total Mean Average Precision: 0.6648579189653072
+
+Epoch: 8, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9841787439613526
+Class 1 Mean Average Precision: 0.9950171821305841
+Class 2 Mean Average Precision: 0.9912325502213145
+Class 3 Mean Average Precision: 0.1964412464412469
+Class 4 Mean Average Precision: 0.40971476309822175
+Class 5 Mean Average Precision: 0.1896619725125826
+Class 6 Mean Average Precision: 0.9841787439613526
+Class 7 Mean Average Precision: 0.6897186147186143
+Class 8 Mean Average Precision: 0.18674666836431575
+Class 9 Mean Average Precision: 0.9985935302390999
+Total Mean Average Precision: 0.6625484015648686
+
+Epoch: 9, Learning Rate: 0.01
+Class 0 Mean Average Precision: 0.9817075436640657
+Class 1 Mean Average Precision: 1.0
+Class 2 Mean Average Precision: 0.995846101464079
+Class 3 Mean Average Precision: 0.2169182169182174
+Class 4 Mean Average Precision: 0.47331125432629256
+Class 5 Mean Average Precision: 0.2114958381726679
+Class 6 Mean Average Precision: 0.9817075436640657
+Class 7 Mean Average Precision: 0.7687590187590179
+Class 8 Mean Average Precision: 0.18761353026058963
+Class 9 Mean Average Precision: 0.9957805907172996
+Total Mean Average Precision: 0.6813139637946295
+
+Class 0 Mean Average Precision: 0.9872024310819152
+Class 1 Mean Average Precision: 0.9994563529046289
+Class 2 Mean Average Precision: 0.9926867607615526
+Class 3 Mean Average Precision: 0.2297241325414185
+Class 4 Mean Average Precision: 0.7277790745928004
+Class 5 Mean Average Precision: 0.35074092193955264
+Class 6 Mean Average Precision: 0.9872024310819152
+Class 7 Mean Average Precision: 0.7902830188679247
+Class 8 Mean Average Precision: 0.20499123292727878
+Class 9 Mean Average Precision: 0.9981701738334858
+Total Mean Average Precision: 0.7268236530532473
+
