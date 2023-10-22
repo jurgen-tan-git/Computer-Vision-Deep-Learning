@@ -34,7 +34,7 @@ if __name__ == '__main__':
     image_dict = util.getImages()
     tranform = util.getTransorms()
 
-    test_transform = util.getTestTransforms()
+    test_transform = util.getTestTransform()
             
     
     train_ds = CustomImageDataset(dir,X_train, y_train, image_dict, transform=tranform[0])

@@ -96,16 +96,16 @@ class Utils:
     
     def createDataLoaders(self, train_ds1, val_ds1, test_ds1, train_ds2=None, train_ds3=None, val_ds2=None, val_ds3=None, batchsize=32):
         
-        test = DataLoader(test_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
+        test = DataLoader(test_ds1, batch_size=batchsize, shuffle=False, num_workers=4)
         # Create training and validation dataloaders for multi-class classification with data augmentation
         if train_ds1 != None and train_ds2 != None and val_ds2 != None and val_ds3 != None:
             train1 = DataLoader(train_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
             train2 = DataLoader(train_ds2, batch_size=batchsize, shuffle=True, num_workers=4)
             train3 = DataLoader(train_ds3, batch_size=batchsize, shuffle=True, num_workers=4)
 
-            val1 = DataLoader(val_ds1, batch_size=batchsize, shuffle=True, num_workers=4)
-            val2 = DataLoader(val_ds2, batch_size=batchsize, shuffle=True, num_workers=4)
-            val3 = DataLoader(val_ds3, batch_size=batchsize, shuffle=True, num_workers=4)
+            val1 = DataLoader(val_ds1, batch_size=batchsize, shuffle=False, num_workers=4)
+            val2 = DataLoader(val_ds2, batch_size=batchsize, shuffle=False, num_workers=4)
+            val3 = DataLoader(val_ds3, batch_size=batchsize, shuffle=False, num_workers=4)
 
             
 

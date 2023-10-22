@@ -51,7 +51,7 @@ if __name__ == '__main__':
     X_train, X_val, X_test, y_train, y_val, y_test, num_classes = util.split_data()
     image_dict = util.getImages()
     tranform = util.getTransorms()
-    test_transform = util.getTestTransforms()
+    test_transform = util.getTestTransform()
     
     train_ds1 = CustomImageDataset(dir,X_train, y_train, image_dict, transform=tranform[0])
     train_ds2= CustomImageDataset(dir,X_train, y_train, image_dict, transform=tranform[1])
