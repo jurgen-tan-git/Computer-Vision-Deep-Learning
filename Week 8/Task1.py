@@ -24,7 +24,7 @@ class CustomDataset(Dataset):
 
         if self.fish:
             image = transforms.Resize(256)(image)
-        with open(self.dir + '/labels/' + self.label_names[0][:-3] + 'txt') as f:
+        with open(self.dir + '/labels/' + self.label_names[idx][:-3] + 'txt') as f:
             labels = f.readlines()
 
         label_list = []
