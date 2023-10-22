@@ -46,11 +46,12 @@ class Model(torch.nn.Module):
 
     
 if __name__ == '__main__':
-    dir = './EuroSAT_RGB/EuroSAT_RGB/'
+    dir = './EuroSAT_RGB/'
     util = Utils(dir)
     X_train, X_val, X_test, y_train, y_val, y_test, num_classes = util.split_data()
     image_dict = util.getImages()
     tranform = util.getTransorms()
+    test_transform = util.getTestTransforms()
     
     train_ds1 = CustomImageDataset(dir,X_train, y_train, image_dict, transform=tranform[0])
     train_ds2= CustomImageDataset(dir,X_train, y_train, image_dict, transform=tranform[1])
@@ -60,13 +61,12 @@ if __name__ == '__main__':
     val_ds2 = CustomImageDataset(dir, X_val, y_val, image_dict, transform=tranform[1])
     val_ds3 = CustomImageDataset(dir, X_val, y_val, image_dict, transform=tranform[2])
 
-    test_ds1 = CustomImageDataset(dir, X_test, y_test, image_dict,  transform=tranform[0])
-    test_ds2 = CustomImageDataset(dir, X_test, y_test, image_dict,  transform=tranform[1])
-    test_ds3 = CustomImageDataset(dir, X_test, y_test, image_dict,  transform=tranform[2])
+    test_ds1 = CustomImageDataset(dir, X_test, y_test, image_dict,  transform=test_transform)
+
 
     dataloaders = util.createDataLoaders(train_ds1=train_ds1, train_ds2=train_ds2, train_ds3=train_ds3, 
                                          val_ds1=val_ds1, val_ds2=val_ds2, val_ds3=val_ds3, 
-                                         test_ds1=test_ds1, test_ds2=test_ds2, test_ds3=test_ds3)
+                                         test_ds1=test_ds1)
     
     device = torch.device("cuda:0")
     
@@ -79,7 +79,7 @@ if __name__ == '__main__':
     best_hyperparameter= None
     weights_chosen = None
     bestmeasure = None
-    loss = torch.nn.CrossEntropyLoss(weight=None, size_average=None, ignore_index=-100, reduce=None, reduction='mean')
+    loss = torch.nn.CrossEntropyLoss()
     
     for lr in learning_rates:
         model = Model(num_classes=num_classes, weights=ResNet50_Weights.DEFAULT).to(device)
@@ -93,7 +93,7 @@ if __name__ == '__main__':
                                                                 num_epochs = epochs, 
                                                                 device = device,
                                                                 lr = lr,
-                                                                name='Task1')
+                                                                name='mutliclass-model')
         if best_hyperparameter is None:
             best_hyperparameter = lr
             weights_chosen = bestweights
@@ -109,10 +109,14 @@ if __name__ == '__main__':
             dump(bestweights, file)
 
 
-    accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'][transform_index], criterion = None, device = device)
+    accuracy,_ = util.evaluate(model = model , dataloader= dataloaders['test'], criterion = None, device = device)
     print('best hyperparameter', best_hyperparameter)
     print("Best Augmentation Index", transform_index)
     print('accuracy val',bestmeasure)
     print('accuracy test',accuracy) 
+    with open('./Log/mutliclass-model_ClassMAP.txt', 'a') as f:
+        f.write("Best Hyperparameter: " + str(best_hyperparameter) + "\n")
+        f.write("Best Augmentation Index: " + str(transform_index) + "\n")
+        f.close()
     
     
