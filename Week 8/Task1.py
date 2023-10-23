@@ -65,19 +65,19 @@ class CustomDataset(Dataset):
     
     def __len__(self):
         return len(self.image_names)
+def getTransform():
+    transform = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+        ])
+    return transform
     
 if __name__ == '__main__':
     dir = './aquariumfishes/aquariumfishes/aquarium_pretrain/train/'
     images = os.listdir(dir + 'images')
     labels = os.listdir(dir + 'labels')
 
-    transform = transforms.Compose([
-            transforms.Resize(256),
-            transforms.RandomCrop(224),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-        ])
+    transform = getTransform()
 
     dataset = CustomDataset(dir, images, labels, transform=transform, fish=True)
 

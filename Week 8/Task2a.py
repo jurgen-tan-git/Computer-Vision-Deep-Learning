@@ -1,7 +1,7 @@
 import os
 import torch
 from torchvision import transforms
-from Task1 import CustomDataset
+from Task1 import CustomDataset, getTransform
 from coco_eval import CocoEvaluator
 from coco_utils import get_coco_api_from_dataset
 
@@ -10,10 +10,7 @@ from coco_utils import get_coco_api_from_dataset
 if __name__ == "__main__":
     dirs = ['./valid-20231011T153034Z-001/valid/', './aquariumfishes/aquariumfishes/aquarium_pretrain/valid/']
 
-    transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-        ])
+    transform = getTransform()
     for dir in dirs:
         print(dir)
         images = os.listdir(dir + 'images')

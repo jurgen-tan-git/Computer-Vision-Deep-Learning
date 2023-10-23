@@ -1,7 +1,7 @@
 import os
 import torch
 from torchvision import transforms
-from Task1 import CustomDataset
+from Task1 import CustomDataset, getTransform
 from coco_eval import CocoEvaluator
 from coco_utils import get_coco_api_from_dataset
 
@@ -10,10 +10,7 @@ from coco_utils import get_coco_api_from_dataset
 if __name__ == "__main__":
     dirs = ['./valid-20231011T153034Z-001/valid/', './aquariumfishes/aquariumfishes/aquarium_pretrain/valid/']
 
-    transform = transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-        ])
+    transform = getTransform()
     for dir in dirs:
         print(dir)
         images = os.listdir(dir + 'images')
@@ -35,11 +32,16 @@ if __name__ == "__main__":
             for value in target["boxes"]:
                 x_start, y_start, x_end, y_end = value
 
-                x_center = (x_start + x_end) / 2
-                y_center = (y_start + y_end) / 2
+                # x_center = (x_start + x_end) / 2
+                # y_center = (y_start + y_end) / 2
 
 
-                centered_box.append(torch.tensor([x_center-0.1, y_center-0.1, x_center+0.1, y_center+0.1]))
+                # centered_box.append(torch.tensor([x_center-0.1, y_center-0.1, x_center+0.1, y_center+0.1]))
+
+                width = x_end - x_start
+                height = y_end - y_start
+
+                centered_box.append(torch.tensor([0.5-width/2, 0.5-height/2, 0.5+width/2, 0.5+height/2]))
 
             predsdict = {
                 "image_id": target["image_id"],
