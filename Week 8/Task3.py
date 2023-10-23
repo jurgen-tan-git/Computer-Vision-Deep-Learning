@@ -15,14 +15,13 @@ if __name__ == "__main__":
     dataset = CustomDataset(dir, images, labels)
 
     device = torch.device("cuda")
-    model = YOLO("yolov8n.pt").to(device)
+    model = YOLO("yolov8s.pt").to(device)
     
     images=[]
     for i in range(dataset.__len__()):
         image, target = dataset.__getitem__(i)
         images.append(image)
     results = model.predict(images, save=True, device=device, save_txt=True, save_crop=True)
-    print(results.names)
 
 
 
