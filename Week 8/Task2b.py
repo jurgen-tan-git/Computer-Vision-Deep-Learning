@@ -32,16 +32,16 @@ if __name__ == "__main__":
             for value in target["boxes"]:
                 x_start, y_start, x_end, y_end = value
 
-                # x_center = (x_start + x_end) / 2
-                # y_center = (y_start + y_end) / 2
+                x_center = (x_start + x_end) / 2
+                y_center = (y_start + y_end) / 2
 
 
-                # centered_box.append(torch.tensor([x_center-0.1, y_center-0.1, x_center+0.1, y_center+0.1]))
+                centered_box.append(torch.tensor([x_center-0.1, y_center-0.1, x_center+0.1, y_center+0.1]))
 
-                width = x_end - x_start
-                height = y_end - y_start
+                # width = x_end - x_start
+                # height = y_end - y_start
 
-                centered_box.append(torch.tensor([0.5-width/2, 0.5-height/2, 0.5+width/2, 0.5+height/2]))
+                # centered_box.append(torch.tensor([0.5-width/2, 0.5, 0.5+width/2, 0.5]))
 
             predsdict = {
                 "image_id": target["image_id"],

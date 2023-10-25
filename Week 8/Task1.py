@@ -20,7 +20,7 @@ class CustomDataset(Dataset):
         image = Image.open(path)
 
         if self.transform:
-            image = self.transform(image)
+            image = self.transform(image).to(torch.float32)
 
         if self.fish:
             image = transforms.Resize(256)(image)
@@ -65,10 +65,12 @@ class CustomDataset(Dataset):
     
     def __len__(self):
         return len(self.image_names)
+    
 def getTransform():
     transform = transforms.Compose([
             transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
+            transforms.Resize(256),
+            # transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
         ])
     return transform
     

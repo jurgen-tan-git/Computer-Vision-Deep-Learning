@@ -53,6 +53,8 @@ class CustomDataset(Dataset):
             elif label_txt[0] in ['7', '14', '17', '20']:
                 label_txt[0] = 9
 
+            else:
+                label_txt[0] = -1
 
             label_list.append(int(label_txt[0]))
 
@@ -99,7 +101,8 @@ if __name__ == "__main__":
     dataset = CustomDataset(dir, images, labels, transform=transform)
 
     cocoAnnotation = get_coco_api_from_dataset(dataset)
-    coco_evaluator2 = CocoEvaluator(cocoAnnotation, iou_types=['bbox'])
+    coco_evaluator = CocoEvaluator(cocoAnnotation, iou_types=['bbox'])
+    # coco_evaluator.coco_eval["bbox"].params.catIds = [9, 11]
 
     device = torch.device("cuda")
     model = YOLO("yolov8x.pt").to(device)
@@ -116,8 +119,9 @@ if __name__ == "__main__":
     # print(len(index))
     
     # Get the predictions of the images that contain traffic lights and stop signs
-    for i in index:
-        image, target = dataset.__getitem__(i)
+    res = {}
+    for value in index:
+        image, target = dataset.__getitem__(value)
         image = image.unsqueeze(0).to(device)
         
         # for j in range(len(target['labels'])):
@@ -132,45 +136,42 @@ if __name__ == "__main__":
         result = model.predict(image)
         result = result[0]
 
-        # labels = []
-        # scores = []
-        # boxes = []
+        labels = []
+        scores = []
+        boxes = []
 
-        # for box in result.boxes:
-        #     label = (box.cls[0].item())
-        #     cords =  box.xywhn[0].tolist()
-        #     prob = box.conf[0].item()
-        #     labels.append(label)
-        #     scores.append(prob)
-        #     boxes.append(cords)
+        if len(result.boxes) > 0:
+            # for box in result.boxes:
+            #     label = box.cls[0].item()
+            #     cords =  torch.tensor(box.xyxyn[0].tolist())
+            #     prob = box.conf[0].item()
 
-        labels = result.boxes.cls.tolist()
-        scores = result.boxes.conf.tolist()
-        boxes = result.boxes.xywhn.tolist()
+            #     labels.append(label)
+            #     scores.append(prob)
+            #     boxes.append(cords)
+            # labels = torch.tensor(labels)
+            # scores = torch.tensor(scores)
+            # boxes = torch.tensor(boxes)
 
+            labels = torch.tensor(result.boxes.cls)
+            scores = torch.tensor(result.boxes.conf)
+            boxes = torch.tensor(result.boxes.xyxyn)
+            
 
-        predsdict = {
-                "image_id": target["image_id"],
-                "labels": target["labels"],
-                "scores": torch.tensor(scores),
-                "boxes": torch.tensor(boxes)
-            }
-        print(predsdict['labels'])
-        # predsdict = {
-        #     "image_id": target["image_id"],
-        #     "labels": target["labels"],
-        #     "scores": torch.tensor([1.0]).repeat(target["labels"].shape[0]),
-        #     "boxes": target['boxes']
-        # }
-        
-        res = {target["image_id"]: predsdict}
+            predsdict = {
+                    "image_id": target["image_id"],
+                    "labels": labels,
+                    "scores": scores,
+                    "boxes": boxes
+                }
 
-        try:
-            coco_evaluator2.update(res)
-        except:
-            pass
-    coco_evaluator2.accumulate()
-    coco_evaluator2.summarize()
+            
+            res[target["image_id"]] = predsdict
+    
+    # print(res)
+    coco_evaluator.update(res)
+    coco_evaluator.accumulate()
+    coco_evaluator.summarize()
 
 
 

@@ -25,7 +25,7 @@ if __name__ == "__main__":
         coco_evaluator2 = CocoEvaluator(cocoAnnotation, iou_types=['bbox'])
         print(len(dataset))
 
-        for i in range(len(dataset)):
+        for i in range(dataset.__len__()):
             image, target = dataset.__getitem__(i)
             predsdict = {
                 "image_id": target["image_id"],
