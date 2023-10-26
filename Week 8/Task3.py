@@ -102,57 +102,21 @@ if __name__ == "__main__":
 
     cocoAnnotation = get_coco_api_from_dataset(dataset)
     coco_evaluator = CocoEvaluator(cocoAnnotation, iou_types=['bbox'])
-    # coco_evaluator.coco_eval["bbox"].params.catIds = [9, 11]
 
     device = torch.device("cuda")
     model = YOLO("yolov8x.pt").to(device)
     
     index = dataset.getindex()
-    print(len(index))
-    # Get the index of the images that contain traffic lights and stop signs
-    # for i in range(dataset.__len__()):
-    #     _, target = dataset.__getitem__(i)
-    #     for j in range(len(target['labels'])):
-    #         if int(target['labels'][j]) in [15, 7, 14, 17, 20] and i not in index:
-    #             index.append(i)
-    # print("The index of the images that contain traffic lights and stop signs: ")
-    # print(len(index))
-    
-    # Get the predictions of the images that contain traffic lights and stop signs
+
     res = {}
     for value in index:
         image, target = dataset.__getitem__(value)
         image = image.unsqueeze(0).to(device)
-        
-        # for j in range(len(target['labels'])):
-        #     # Stop Sign Mapping: index 15 from traffic dataset to index 11 in coco dataset
-        #     if int(target['labels'][j]) == 15:
-        #         target['labels'][j] = 11
-
-        #     # Traffic Light Mapping: index 7, 14, 17, 20 to index 9 in coco dataset
-        #     elif int(target['labels'][j]) in [7, 14, 17, 20]:
-        #         target['labels'][j] = 9
 
         result = model.predict(image)
         result = result[0]
 
-        labels = []
-        scores = []
-        boxes = []
-
         if len(result.boxes) > 0:
-            # for box in result.boxes:
-            #     label = box.cls[0].item()
-            #     cords =  torch.tensor(box.xyxyn[0].tolist())
-            #     prob = box.conf[0].item()
-
-            #     labels.append(label)
-            #     scores.append(prob)
-            #     boxes.append(cords)
-            # labels = torch.tensor(labels)
-            # scores = torch.tensor(scores)
-            # boxes = torch.tensor(boxes)
-
             labels = torch.tensor(result.boxes.cls)
             scores = torch.tensor(result.boxes.conf)
             boxes = torch.tensor(result.boxes.xyxyn)
@@ -168,7 +132,6 @@ if __name__ == "__main__":
             
             res[target["image_id"]] = predsdict
     
-    # print(res)
     coco_evaluator.update(res)
     coco_evaluator.accumulate()
     coco_evaluator.summarize()

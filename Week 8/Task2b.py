@@ -38,11 +38,6 @@ if __name__ == "__main__":
 
                 centered_box.append(torch.tensor([x_center-0.1, y_center-0.1, x_center+0.1, y_center+0.1]))
 
-                # width = x_end - x_start
-                # height = y_end - y_start
-
-                # centered_box.append(torch.tensor([0.5-width/2, 0.5, 0.5+width/2, 0.5]))
-
             predsdict = {
                 "image_id": target["image_id"],
                 "labels": target["labels"],
