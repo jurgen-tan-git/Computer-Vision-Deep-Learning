@@ -1,24 +1,3 @@
-# import os
-# from sklearn.model_selection import train_test_split
-# dir = "./valid/images"
-
-# files = os.listdir(dir)
-
-# names = {}
-# for file in files:
-#     category = file.split('-')[:3]
-#     if category[2].isnumeric() == True:
-#         category = category[:2]
-#     category = '-'.join(category)
-#     if category not in names:
-#         names[category] = []
-#     names[category].append(file)
-    
-# for key in names.keys():
-#     print(names[key])
-#     X_val, X_test, y_val, y_test = train_test_split(names[key], [key]*len(names[key]), test_size=0.5, random_state=0, shuffle=True)
-
-
 from sklearn.model_selection import train_test_split
 import os
 
@@ -37,7 +16,7 @@ class Task1:
         # Reading the labels and storing them in a dictionary with the key as the category and the value as the file name
         for file in self.files:
             category = file.split('-')[:3]
-            if category[2].isnumeric() == True:
+            if category[2].isnumeric() == True:g
                 category = category[:2]
             category = '-'.join(category)
             if category not in self.names:
