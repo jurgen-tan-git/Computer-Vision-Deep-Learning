@@ -1,0 +1,176 @@
+2023-11-03 12:07:37,341 INFO    StreamThr :23296 [internal.py:wandb_internal():86] W&B internal server running at pid: 23296, started at: 2023-11-03 12:07:37.341624
+2023-11-03 12:07:37,342 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: status
+2023-11-03 12:07:37,343 INFO    WriterThread:23296 [datastore.py:open_for_write():85] open: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\run-ql55ufup.wandb
+2023-11-03 12:07:37,345 DEBUG   SenderThread:23296 [sender.py:send():369] send: header
+2023-11-03 12:07:37,379 DEBUG   SenderThread:23296 [sender.py:send():369] send: run
+2023-11-03 12:07:37,969 INFO    SenderThread:23296 [dir_watcher.py:__init__():211] watching files in: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files
+2023-11-03 12:07:37,969 INFO    SenderThread:23296 [sender.py:_start_run_threads():1100] run started: ql55ufup with start time 1698984457.341623
+2023-11-03 12:07:37,969 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: summary_record
+2023-11-03 12:07:37,969 INFO    SenderThread:23296 [sender.py:_save_file():1354] saving file wandb-summary.json with policy end
+2023-11-03 12:07:37,972 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: check_version
+2023-11-03 12:07:37,972 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: check_version
+2023-11-03 12:07:38,056 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: run_start
+2023-11-03 12:07:38,077 DEBUG   HandlerThread:23296 [system_info.py:__init__():31] System info init
+2023-11-03 12:07:38,077 DEBUG   HandlerThread:23296 [system_info.py:__init__():46] System info init done
+2023-11-03 12:07:38,077 INFO    HandlerThread:23296 [system_monitor.py:start():181] Starting system monitor
+2023-11-03 12:07:38,077 INFO    SystemMonitor:23296 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-11-03 12:07:38,077 INFO    HandlerThread:23296 [system_monitor.py:probe():201] Collecting system info
+2023-11-03 12:07:38,082 INFO    SystemMonitor:23296 [interfaces.py:start():190] Started cpu monitoring
+2023-11-03 12:07:38,083 INFO    SystemMonitor:23296 [interfaces.py:start():190] Started disk monitoring
+2023-11-03 12:07:38,083 INFO    SystemMonitor:23296 [interfaces.py:start():190] Started gpu monitoring
+2023-11-03 12:07:38,090 INFO    SystemMonitor:23296 [interfaces.py:start():190] Started memory monitoring
+2023-11-03 12:07:38,100 INFO    SystemMonitor:23296 [interfaces.py:start():190] Started network monitoring
+2023-11-03 12:07:38,104 DEBUG   HandlerThread:23296 [system_info.py:probe():195] Probing system
+2023-11-03 12:07:38,106 DEBUG   HandlerThread:23296 [system_info.py:_probe_git():180] Probing git
+2023-11-03 12:07:38,170 DEBUG   HandlerThread:23296 [system_info.py:_probe_git():188] Probing git done
+2023-11-03 12:07:38,170 DEBUG   HandlerThread:23296 [system_info.py:probe():240] Probing system done
+2023-11-03 12:07:38,170 DEBUG   HandlerThread:23296 [system_monitor.py:probe():210] {'os': 'Windows-10-10.0.19041-SP0', 'python': '3.9.0', 'heartbeatAt': '2023-11-03T04:07:38.104409', 'startedAt': '2023-11-03T04:07:37.331623', 'docker': None, 'cuda': None, 'args': (), 'state': 'running', 'program': 'c:\\Users\\Jurgen\\Desktop\\Project\\School\\AAI\\Computer Vision & Deep Learning\\Week 8\\test.py', 'codePath': 'Week 8\\test.py', 'git': {'remote': 'https://github.com/jurgen-tan-git/Computer-Vision-Deep-Learning.git', 'commit': '30e23cacf0c8dcff21d17c138d1f7e48de8cc15c'}, 'email': '56992789+jurgen-tan-git@users.noreply.github.com', 'root': 'C:/Users/Jurgen/Desktop/Project/School/AAI/Computer Vision & Deep Learning', 'host': 'Jurgen-Desktop', 'username': 'Jurgen', 'executable': 'C:\\users\\jurgen\\appdata\\local\\programs\\python\\python39\\python.exe', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 4000.0, 'min': 0.0, 'max': 4000.0}, 'cpu_freq_per_core': [{'current': 4000.0, 'min': 0.0, 'max': 4000.0}], 'disk': {'total': 1861.8290977478027, 'used': 461.3254051208496}, 'gpu': 'NVIDIA GeForce RTX 2080 Ti', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}], 'memory': {'total': 31.927806854248047}}
+2023-11-03 12:07:38,170 INFO    HandlerThread:23296 [system_monitor.py:probe():211] Finished collecting system info
+2023-11-03 12:07:38,170 INFO    HandlerThread:23296 [system_monitor.py:probe():214] Publishing system info
+2023-11-03 12:07:38,170 DEBUG   HandlerThread:23296 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-11-03 12:07:38,171 DEBUG   HandlerThread:23296 [system_info.py:_save_pip():67] Saving pip packages done
+2023-11-03 12:07:38,173 INFO    HandlerThread:23296 [system_monitor.py:probe():216] Finished publishing system info
+2023-11-03 12:07:38,181 DEBUG   SenderThread:23296 [sender.py:send():369] send: files
+2023-11-03 12:07:38,181 INFO    SenderThread:23296 [sender.py:_save_file():1354] saving file wandb-metadata.json with policy now
+2023-11-03 12:07:38,190 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-03 12:07:38,190 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: stop_status
+2023-11-03 12:07:38,516 DEBUG   SenderThread:23296 [sender.py:send():369] send: telemetry
+2023-11-03 12:07:38,898 INFO    wandb-upload_0:23296 [upload_job.py:push():133] Uploaded file C:\Users\Jurgen\AppData\Local\Temp\tmpar7fh276wandb\745fcvjh-wandb-metadata.json
+2023-11-03 12:07:38,906 DEBUG   SenderThread:23296 [sender.py:send():369] send: exit
+2023-11-03 12:07:38,906 INFO    SenderThread:23296 [sender.py:send_exit():574] handling exit code: 1
+2023-11-03 12:07:38,906 INFO    SenderThread:23296 [sender.py:send_exit():576] handling runtime: 0
+2023-11-03 12:07:38,907 INFO    SenderThread:23296 [sender.py:_save_file():1354] saving file wandb-summary.json with policy end
+2023-11-03 12:07:38,907 INFO    SenderThread:23296 [sender.py:send_exit():582] send defer
+2023-11-03 12:07:38,908 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:38,908 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 0
+2023-11-03 12:07:38,908 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:38,909 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 0
+2023-11-03 12:07:38,909 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 1
+2023-11-03 12:07:38,909 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:38,909 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 1
+2023-11-03 12:07:38,909 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:38,910 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 1
+2023-11-03 12:07:38,910 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 2
+2023-11-03 12:07:38,910 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:38,910 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 2
+2023-11-03 12:07:38,910 INFO    HandlerThread:23296 [system_monitor.py:finish():190] Stopping system monitor
+2023-11-03 12:07:38,910 INFO    HandlerThread:23296 [interfaces.py:finish():202] Joined cpu monitor
+2023-11-03 12:07:38,911 DEBUG   SystemMonitor:23296 [system_monitor.py:_start():159] Starting system metrics aggregation loop
+2023-11-03 12:07:38,911 DEBUG   SystemMonitor:23296 [system_monitor.py:_start():166] Finished system metrics aggregation loop
+2023-11-03 12:07:38,911 INFO    HandlerThread:23296 [interfaces.py:finish():202] Joined disk monitor
+2023-11-03 12:07:38,911 DEBUG   SystemMonitor:23296 [system_monitor.py:_start():170] Publishing last batch of metrics
+2023-11-03 12:07:38,979 INFO    Thread-16 :23296 [dir_watcher.py:_on_file_created():272] file/dir created: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\requirements.txt
+2023-11-03 12:07:38,979 INFO    Thread-16 :23296 [dir_watcher.py:_on_file_created():272] file/dir created: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\wandb-metadata.json
+2023-11-03 12:07:38,980 INFO    Thread-16 :23296 [dir_watcher.py:_on_file_created():272] file/dir created: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\output.log
+2023-11-03 12:07:38,980 INFO    Thread-16 :23296 [dir_watcher.py:_on_file_created():272] file/dir created: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\wandb-summary.json
+2023-11-03 12:07:38,980 INFO    HandlerThread:23296 [interfaces.py:finish():202] Joined gpu monitor
+2023-11-03 12:07:38,980 INFO    HandlerThread:23296 [interfaces.py:finish():202] Joined memory monitor
+2023-11-03 12:07:38,980 INFO    HandlerThread:23296 [interfaces.py:finish():202] Joined network monitor
+2023-11-03 12:07:38,981 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:38,981 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 2
+2023-11-03 12:07:38,981 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 3
+2023-11-03 12:07:38,981 DEBUG   SenderThread:23296 [sender.py:send():369] send: stats
+2023-11-03 12:07:38,981 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:38,982 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 3
+2023-11-03 12:07:38,982 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:38,982 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 3
+2023-11-03 12:07:38,982 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 4
+2023-11-03 12:07:38,982 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:38,982 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 4
+2023-11-03 12:07:38,982 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:38,982 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 4
+2023-11-03 12:07:38,982 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 5
+2023-11-03 12:07:38,982 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:38,983 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 5
+2023-11-03 12:07:38,983 DEBUG   SenderThread:23296 [sender.py:send():369] send: summary
+2023-11-03 12:07:38,983 INFO    SenderThread:23296 [sender.py:_save_file():1354] saving file wandb-summary.json with policy end
+2023-11-03 12:07:38,983 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:38,983 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 5
+2023-11-03 12:07:38,983 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 6
+2023-11-03 12:07:38,984 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:38,984 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 6
+2023-11-03 12:07:38,984 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:38,984 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 6
+2023-11-03 12:07:38,986 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: status_report
+2023-11-03 12:07:39,275 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 7
+2023-11-03 12:07:39,276 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:39,276 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 7
+2023-11-03 12:07:39,276 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:39,276 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 7
+2023-11-03 12:07:39,938 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: poll_exit
+2023-11-03 12:07:39,984 INFO    Thread-16 :23296 [dir_watcher.py:_on_file_modified():289] file/dir modified: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\config.yaml
+2023-11-03 12:07:39,984 INFO    Thread-16 :23296 [dir_watcher.py:_on_file_modified():289] file/dir modified: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\wandb-summary.json
+2023-11-03 12:07:40,537 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 8
+2023-11-03 12:07:40,537 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: poll_exit
+2023-11-03 12:07:40,537 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:40,537 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 8
+2023-11-03 12:07:40,538 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:40,538 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 8
+2023-11-03 12:07:40,538 INFO    SenderThread:23296 [job_builder.py:build():240] Attempting to build job artifact
+2023-11-03 12:07:40,538 INFO    SenderThread:23296 [job_builder.py:build():264] is repo sourced job
+2023-11-03 12:07:40,542 INFO    SenderThread:23296 [job_builder.py:build():305] adding wandb-job metadata file
+2023-11-03 12:07:40,554 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 9
+2023-11-03 12:07:40,554 DEBUG   SenderThread:23296 [sender.py:send():369] send: artifact
+2023-11-03 12:07:40,554 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:40,556 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 9
+2023-11-03 12:07:40,938 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: poll_exit
+2023-11-03 12:07:40,984 INFO    Thread-16 :23296 [dir_watcher.py:_on_file_modified():289] file/dir modified: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\output.log
+2023-11-03 12:07:41,812 INFO    SenderThread:23296 [sender.py:send_artifact():1450] sent artifact job-https___github.com_jurgen-tan-git_Computer-Vision-Deep-Learning.git_Week_8_test.py - {'id': 'QXJ0aWZhY3Q6NjI2NTk5MzA2', 'digest': '19d1226fb8dd3bdd22b393c9366ba9ae', 'state': 'COMMITTED', 'aliases': [{'artifactCollectionName': 'job-https___github.com_jurgen-tan-git_Computer-Vision-Deep-Learning.git_Week_8_test.py', 'alias': 'latest'}, {'artifactCollectionName': 'job-https___github.com_jurgen-tan-git_Computer-Vision-Deep-Learning.git_Week_8_test.py', 'alias': 'v0'}], 'artifactSequence': {'id': 'QXJ0aWZhY3RDb2xsZWN0aW9uOjExMjMwMjY3Nw==', 'latestArtifact': {'id': 'QXJ0aWZhY3Q6NjI2NTk5MzA2', 'versionIndex': 0}}, 'version': 'v0'}
+2023-11-03 12:07:41,813 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:41,813 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 9
+2023-11-03 12:07:41,813 INFO    SenderThread:23296 [dir_watcher.py:finish():359] shutting down directory watcher
+2023-11-03 12:07:41,991 INFO    SenderThread:23296 [dir_watcher.py:finish():389] scan: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files
+2023-11-03 12:07:41,992 INFO    SenderThread:23296 [dir_watcher.py:finish():403] scan save: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\config.yaml config.yaml
+2023-11-03 12:07:41,992 INFO    SenderThread:23296 [dir_watcher.py:finish():403] scan save: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\output.log output.log
+2023-11-03 12:07:41,994 INFO    SenderThread:23296 [dir_watcher.py:finish():403] scan save: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\requirements.txt requirements.txt
+2023-11-03 12:07:41,996 INFO    SenderThread:23296 [dir_watcher.py:finish():403] scan save: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\wandb-metadata.json wandb-metadata.json
+2023-11-03 12:07:41,996 INFO    SenderThread:23296 [dir_watcher.py:finish():403] scan save: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\wandb-summary.json wandb-summary.json
+2023-11-03 12:07:41,998 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 10
+2023-11-03 12:07:41,998 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: poll_exit
+2023-11-03 12:07:41,998 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:42,000 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 10
+2023-11-03 12:07:42,000 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:42,001 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 10
+2023-11-03 12:07:42,001 INFO    SenderThread:23296 [file_pusher.py:finish():159] shutting down file pusher
+2023-11-03 12:07:42,622 INFO    wandb-upload_3:23296 [upload_job.py:push():133] Uploaded file C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\wandb-summary.json
+2023-11-03 12:07:42,631 INFO    wandb-upload_0:23296 [upload_job.py:push():133] Uploaded file C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\config.yaml
+2023-11-03 12:07:42,633 INFO    wandb-upload_2:23296 [upload_job.py:push():133] Uploaded file C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\requirements.txt
+2023-11-03 12:07:42,668 INFO    wandb-upload_1:23296 [upload_job.py:push():133] Uploaded file C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\files\output.log
+2023-11-03 12:07:42,870 INFO    Thread-15 :23296 [sender.py:transition_state():602] send defer: 11
+2023-11-03 12:07:42,870 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:42,870 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 11
+2023-11-03 12:07:42,870 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:42,870 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 11
+2023-11-03 12:07:42,870 INFO    SenderThread:23296 [file_pusher.py:join():164] waiting for file pusher
+2023-11-03 12:07:42,870 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 12
+2023-11-03 12:07:42,871 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:42,871 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 12
+2023-11-03 12:07:42,871 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:42,871 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 12
+2023-11-03 12:07:43,128 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 13
+2023-11-03 12:07:43,128 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:43,128 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 13
+2023-11-03 12:07:43,129 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:43,129 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 13
+2023-11-03 12:07:43,129 INFO    SenderThread:23296 [sender.py:transition_state():602] send defer: 14
+2023-11-03 12:07:43,129 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: defer
+2023-11-03 12:07:43,129 DEBUG   SenderThread:23296 [sender.py:send():369] send: final
+2023-11-03 12:07:43,129 INFO    HandlerThread:23296 [handler.py:handle_request_defer():170] handle defer: 14
+2023-11-03 12:07:43,129 DEBUG   SenderThread:23296 [sender.py:send():369] send: footer
+2023-11-03 12:07:43,129 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: defer
+2023-11-03 12:07:43,129 INFO    SenderThread:23296 [sender.py:send_request_defer():598] handle sender defer: 14
+2023-11-03 12:07:43,130 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: poll_exit
+2023-11-03 12:07:43,130 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: server_info
+2023-11-03 12:07:43,130 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: get_summary
+2023-11-03 12:07:43,130 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: poll_exit
+2023-11-03 12:07:43,130 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: sampled_history
+2023-11-03 12:07:43,130 DEBUG   SenderThread:23296 [sender.py:send_request():396] send_request: server_info
+2023-11-03 12:07:43,365 INFO    MainThread:23296 [wandb_run.py:_footer_history_summary_info():3464] rendering history
+2023-11-03 12:07:43,365 INFO    MainThread:23296 [wandb_run.py:_footer_history_summary_info():3496] rendering summary
+2023-11-03 12:07:43,365 INFO    MainThread:23296 [wandb_run.py:_footer_sync_info():3423] logging synced files
+2023-11-03 12:07:43,366 DEBUG   HandlerThread:23296 [handler.py:handle_request():144] handle_request: shutdown
+2023-11-03 12:07:43,366 INFO    HandlerThread:23296 [handler.py:finish():854] shutting down handler
+2023-11-03 12:07:44,136 INFO    WriterThread:23296 [datastore.py:close():298] close: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\wandb\run-20231103_120737-ql55ufup\run-ql55ufup.wandb
+2023-11-03 12:07:44,375 INFO    SenderThread:23296 [sender.py:finish():1526] shutting down sender
+2023-11-03 12:07:44,375 INFO    SenderThread:23296 [file_pusher.py:finish():159] shutting down file pusher
+2023-11-03 12:07:44,375 INFO    SenderThread:23296 [file_pusher.py:join():164] waiting for file pusher

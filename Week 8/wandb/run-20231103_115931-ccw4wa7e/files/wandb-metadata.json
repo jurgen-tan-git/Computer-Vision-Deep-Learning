@@ -1,0 +1,50 @@
+{
+    "os": "Windows-10-10.0.19041-SP0",
+    "python": "3.9.0",
+    "heartbeatAt": "2023-11-03T03:59:32.600138",
+    "startedAt": "2023-11-03T03:59:31.776777",
+    "docker": null,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "c:\\Users\\Jurgen\\Desktop\\Project\\School\\AAI\\Computer Vision & Deep Learning\\Week 8\\test.py",
+    "codePath": "Week 8\\test.py",
+    "git": {
+        "remote": "https://github.com/jurgen-tan-git/Computer-Vision-Deep-Learning.git",
+        "commit": "30e23cacf0c8dcff21d17c138d1f7e48de8cc15c"
+    },
+    "email": "56992789+jurgen-tan-git@users.noreply.github.com",
+    "root": "C:/Users/Jurgen/Desktop/Project/School/AAI/Computer Vision & Deep Learning",
+    "host": "Jurgen-Desktop",
+    "username": "Jurgen",
+    "executable": "C:\\users\\jurgen\\appdata\\local\\programs\\python\\python39\\python.exe",
+    "cpu_count": 6,
+    "cpu_count_logical": 12,
+    "cpu_freq": {
+        "current": 4000.0,
+        "min": 0.0,
+        "max": 4000.0
+    },
+    "cpu_freq_per_core": [
+        {
+            "current": 4000.0,
+            "min": 0.0,
+            "max": 4000.0
+        }
+    ],
+    "disk": {
+        "total": 1861.8290977478027,
+        "used": 461.3769073486328
+    },
+    "gpu": "NVIDIA GeForce RTX 2080 Ti",
+    "gpu_count": 1,
+    "gpu_devices": [
+        {
+            "name": "NVIDIA GeForce RTX 2080 Ti",
+            "memory_total": 11811160064
+        }
+    ],
+    "memory": {
+        "total": 31.927806854248047
+    }
+}

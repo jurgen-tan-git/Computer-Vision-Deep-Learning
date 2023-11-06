@@ -1,0 +1,33 @@
+Freezing layer 'model.22.dfl.conv.weight'
+[34m[1mAMP: [39m[22mrunning Automatic Mixed Precision (AMP) checks with YOLOv8n...
+[34m[1mAMP: [39m[22mchecks passed
+Traceback (most recent call last):
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\data\base.py", line 115, in get_img_files
+    raise FileNotFoundError(f'{self.prefix}{p} does not exist')
+FileNotFoundError: [34m[1mtrain: [39m[22mC:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\train\images does not exist
+The above exception was the direct cause of the following exception:
+Traceback (most recent call last):
+  File "c:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 8\test.py", line 7, in <module>
+    results = model.train(data="data.yaml", epochs=100, imgsz=640, device=device, workers=16)
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\engine\model.py", line 341, in train
+    self.trainer.train()
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\engine\trainer.py", line 192, in train
+    self._do_train(world_size)
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\engine\trainer.py", line 288, in _do_train
+    self._setup_train(world_size)
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\engine\trainer.py", line 253, in _setup_train
+    self.train_loader = self.get_dataloader(self.trainset, batch_size=batch_size, rank=RANK, mode='train')
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\models\yolo\detect\train.py", line 46, in get_dataloader
+    dataset = self.build_dataset(dataset_path, mode, batch_size)
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\models\yolo\detect\train.py", line 40, in build_dataset
+    return build_yolo_dataset(self.args, img_path, batch, self.data, mode=mode, rect=mode == 'val', stride=gs)
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\data\build.py", line 80, in build_yolo_dataset
+    return YOLODataset(
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\data\dataset.py", line 41, in __init__
+    super().__init__(*args, **kwargs)
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\data\base.py", line 72, in __init__
+    self.im_files = self.get_img_files(self.img_path)
+  File "C:\users\jurgen\appdata\local\programs\python\python39\lib\site-packages\ultralytics\data\base.py", line 120, in get_img_files
+    raise FileNotFoundError(f'{self.prefix}Error loading data from {img_path}\n{HELP_URL}') from e
+FileNotFoundError: [34m[1mtrain: [39m[22mError loading data from C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\train\images
+See https://docs.ultralytics.com/datasets/detect for dataset formatting guidance.
