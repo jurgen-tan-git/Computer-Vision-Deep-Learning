@@ -1,0 +1,57 @@
+2023-11-03 12:39:04,873 INFO    StreamThr :23188 [internal.py:wandb_internal():86] W&B internal server running at pid: 23188, started at: 2023-11-03 12:39:04.872275
+2023-11-03 12:39:04,874 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: status
+2023-11-03 12:39:04,875 INFO    WriterThread:23188 [datastore.py:open_for_write():85] open: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\wandb\run-20231103_123904-8oo4omjj\run-8oo4omjj.wandb
+2023-11-03 12:39:04,877 DEBUG   SenderThread:23188 [sender.py:send():369] send: header
+2023-11-03 12:39:04,912 DEBUG   SenderThread:23188 [sender.py:send():369] send: run
+2023-11-03 12:39:05,535 INFO    SenderThread:23188 [dir_watcher.py:__init__():211] watching files in: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\wandb\run-20231103_123904-8oo4omjj\files
+2023-11-03 12:39:05,535 INFO    SenderThread:23188 [sender.py:_start_run_threads():1100] run started: 8oo4omjj with start time 1698986344.872275
+2023-11-03 12:39:05,536 DEBUG   SenderThread:23188 [sender.py:send_request():396] send_request: summary_record
+2023-11-03 12:39:05,536 INFO    SenderThread:23188 [sender.py:_save_file():1354] saving file wandb-summary.json with policy end
+2023-11-03 12:39:05,539 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: check_version
+2023-11-03 12:39:05,539 DEBUG   SenderThread:23188 [sender.py:send_request():396] send_request: check_version
+2023-11-03 12:39:05,598 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: run_start
+2023-11-03 12:39:05,617 DEBUG   HandlerThread:23188 [system_info.py:__init__():31] System info init
+2023-11-03 12:39:05,617 DEBUG   HandlerThread:23188 [system_info.py:__init__():46] System info init done
+2023-11-03 12:39:05,617 INFO    HandlerThread:23188 [system_monitor.py:start():181] Starting system monitor
+2023-11-03 12:39:05,618 INFO    SystemMonitor:23188 [system_monitor.py:_start():145] Starting system asset monitoring threads
+2023-11-03 12:39:05,618 INFO    HandlerThread:23188 [system_monitor.py:probe():201] Collecting system info
+2023-11-03 12:39:05,622 INFO    SystemMonitor:23188 [interfaces.py:start():190] Started cpu monitoring
+2023-11-03 12:39:05,623 INFO    SystemMonitor:23188 [interfaces.py:start():190] Started disk monitoring
+2023-11-03 12:39:05,623 INFO    SystemMonitor:23188 [interfaces.py:start():190] Started gpu monitoring
+2023-11-03 12:39:05,631 INFO    SystemMonitor:23188 [interfaces.py:start():190] Started memory monitoring
+2023-11-03 12:39:05,635 DEBUG   HandlerThread:23188 [system_info.py:probe():195] Probing system
+2023-11-03 12:39:05,645 INFO    SystemMonitor:23188 [interfaces.py:start():190] Started network monitoring
+2023-11-03 12:39:05,646 DEBUG   HandlerThread:23188 [system_info.py:_probe_git():180] Probing git
+2023-11-03 12:39:05,712 DEBUG   HandlerThread:23188 [system_info.py:_probe_git():188] Probing git done
+2023-11-03 12:39:05,712 DEBUG   HandlerThread:23188 [system_info.py:probe():240] Probing system done
+2023-11-03 12:39:05,712 DEBUG   HandlerThread:23188 [system_monitor.py:probe():210] {'os': 'Windows-10-10.0.19041-SP0', 'python': '3.9.0', 'heartbeatAt': '2023-11-03T04:39:05.645101', 'startedAt': '2023-11-03T04:39:04.864341', 'docker': None, 'cuda': None, 'args': ('wandb', '--offline'), 'state': 'running', 'program': 'c:\\Users\\Jurgen\\Desktop\\Project\\School\\AAI\\Computer Vision & Deep Learning\\Week 9\\Task2_Train.py', 'codePath': 'Week 9\\Task2_Train.py', 'git': {'remote': 'https://github.com/jurgen-tan-git/Computer-Vision-Deep-Learning.git', 'commit': '30e23cacf0c8dcff21d17c138d1f7e48de8cc15c'}, 'email': '56992789+jurgen-tan-git@users.noreply.github.com', 'root': 'C:/Users/Jurgen/Desktop/Project/School/AAI/Computer Vision & Deep Learning', 'host': 'Jurgen-Desktop', 'username': 'Jurgen', 'executable': 'C:\\users\\jurgen\\appdata\\local\\programs\\python\\python39\\python.exe', 'cpu_count': 6, 'cpu_count_logical': 12, 'cpu_freq': {'current': 4000.0, 'min': 0.0, 'max': 4000.0}, 'cpu_freq_per_core': [{'current': 4000.0, 'min': 0.0, 'max': 4000.0}], 'disk': {'total': 1861.8290977478027, 'used': 461.3548812866211}, 'gpu': 'NVIDIA GeForce RTX 2080 Ti', 'gpu_count': 1, 'gpu_devices': [{'name': 'NVIDIA GeForce RTX 2080 Ti', 'memory_total': 11811160064}], 'memory': {'total': 31.927806854248047}}
+2023-11-03 12:39:05,712 INFO    HandlerThread:23188 [system_monitor.py:probe():211] Finished collecting system info
+2023-11-03 12:39:05,712 INFO    HandlerThread:23188 [system_monitor.py:probe():214] Publishing system info
+2023-11-03 12:39:05,712 DEBUG   HandlerThread:23188 [system_info.py:_save_pip():51] Saving list of pip packages installed into the current environment
+2023-11-03 12:39:05,713 DEBUG   HandlerThread:23188 [system_info.py:_save_pip():67] Saving pip packages done
+2023-11-03 12:39:05,715 INFO    HandlerThread:23188 [system_monitor.py:probe():216] Finished publishing system info
+2023-11-03 12:39:05,721 DEBUG   SenderThread:23188 [sender.py:send():369] send: files
+2023-11-03 12:39:05,721 INFO    SenderThread:23188 [sender.py:_save_file():1354] saving file wandb-metadata.json with policy now
+2023-11-03 12:39:05,731 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-03 12:39:05,732 DEBUG   SenderThread:23188 [sender.py:send_request():396] send_request: stop_status
+2023-11-03 12:39:06,061 DEBUG   SenderThread:23188 [sender.py:send():369] send: telemetry
+2023-11-03 12:39:06,404 INFO    wandb-upload_0:23188 [upload_job.py:push():133] Uploaded file C:\Users\Jurgen\AppData\Local\Temp\tmp4ocnbqxcwandb\wr4b2vjw-wandb-metadata.json
+2023-11-03 12:39:06,549 INFO    Thread-16 :23188 [dir_watcher.py:_on_file_created():272] file/dir created: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\wandb\run-20231103_123904-8oo4omjj\files\wandb-summary.json
+2023-11-03 12:39:06,550 INFO    Thread-16 :23188 [dir_watcher.py:_on_file_created():272] file/dir created: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\wandb\run-20231103_123904-8oo4omjj\files\requirements.txt
+2023-11-03 12:39:06,550 INFO    Thread-16 :23188 [dir_watcher.py:_on_file_created():272] file/dir created: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\wandb\run-20231103_123904-8oo4omjj\files\output.log
+2023-11-03 12:39:06,550 INFO    Thread-16 :23188 [dir_watcher.py:_on_file_created():272] file/dir created: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\wandb\run-20231103_123904-8oo4omjj\files\wandb-metadata.json
+2023-11-03 12:39:07,014 DEBUG   SenderThread:23188 [sender.py:send():369] send: telemetry
+2023-11-03 12:39:08,562 INFO    Thread-16 :23188 [dir_watcher.py:_on_file_modified():289] file/dir modified: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\wandb\run-20231103_123904-8oo4omjj\files\output.log
+2023-11-03 12:39:10,052 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: status_report
+2023-11-03 12:39:15,092 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: status_report
+2023-11-03 12:39:20,132 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: status_report
+2023-11-03 12:39:20,729 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-03 12:39:20,730 DEBUG   SenderThread:23188 [sender.py:send_request():396] send_request: stop_status
+2023-11-03 12:39:26,056 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: status_report
+2023-11-03 12:39:31,087 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: status_report
+2023-11-03 12:39:35,723 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: stop_status
+2023-11-03 12:39:35,723 DEBUG   SenderThread:23188 [sender.py:send_request():396] send_request: stop_status
+2023-11-03 12:39:37,060 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: status_report
+2023-11-03 12:39:37,743 INFO    Thread-16 :23188 [dir_watcher.py:_on_file_created():272] file/dir created: C:\Users\Jurgen\Desktop\Project\School\AAI\Computer Vision & Deep Learning\Week 9\wandb\run-20231103_123904-8oo4omjj\files\config.yaml
+2023-11-03 12:39:42,420 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: status_report
+2023-11-03 12:39:47,464 DEBUG   HandlerThread:23188 [handler.py:handle_request():144] handle_request: status_report

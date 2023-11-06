@@ -11,3 +11,5 @@ Small Project/__pycache__/Task1.cpython-310.pyc
 Small Project/__pycache__/Utils.cpython-310.pyc
 *.pyc
 Week 8/yolov8m.pt
+*.pt
+*.zip
