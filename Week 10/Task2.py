@@ -1,9 +1,3 @@
-#!/usr/bin/env python3
-"""
-A simple example that demonstrates how to run a single attack against
-a PyTorch ResNet-18 model for different epsilons and how to then report
-the robust accuracy.
-"""
 import torchvision.models as models
 import eagerpy as ep
 from foolbox import PyTorchModel, accuracy, samples
@@ -12,30 +6,31 @@ import torch
 from PIL import Image
 import torchvision.transforms as transforms
 
+torch.manual_seed(0)
 
 def main() -> None:
-    # instantiate a model (could also be a TensorFlow or JAX model)
-    device = torch.device("cpu")
-    model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT).to(device).eval()
-    # preprocessing = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], axis=-3)
-    foolbox_model = PyTorchModel(model, bounds=(0, 1))
-
-    # get data and test the model
-    # wrapping the tensors with ep.astensors is optional, but it allows
-    # us to work with EagerPy tensors in the following
-    images = Image.open("./mrshout2.jpg").convert('RGB')
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    image = Image.open("./mrshout2.jpg").convert('RGB')
 
     augmentation = transforms.Compose([
         transforms.Resize(300),
         transforms.ToTensor()
     ])
+    image = augmentation(image).unsqueeze(0).to(device)
 
-    images = augmentation(images).unsqueeze(0).to(device)
-    print(images.shape)
-    labels = torch.tensor([949]).to(device)
+    
+    model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT).to(device)
+    model.eval()
+    outputs = model(image)
+    _, preds = torch.max(outputs.data, 1)
+    print(preds.item())
+
+    foolbox_model = PyTorchModel(model, bounds=(0, 1), device=device, preprocessing=None)
+
+    label = torch.tensor([preds.item()]).to(device)
 
     # apply the attack
-    attack = BoundaryAttack()
+    attack = BoundaryAttack(step_adaptation=0.5 , steps=250)
     epsilons = [
         0.0,
         0.0002,
@@ -50,31 +45,32 @@ def main() -> None:
         0.3,
         0.5,
         1.0,
+        100
     ]
-    raw_advs, clipped_advs, success = attack(foolbox_model, images, labels, epsilons=epsilons)
-    # calculate and report the robust accuracy (the accuracy of the model when
-    # it is attacked)
-    robust_accuracy = 1 - success.float().mean(axis=-1)
-    print("robust accuracy for perturbations with")
-    for eps, acc in zip(epsilons, robust_accuracy):
-        print(f"  Linf norm ≤ {eps:<6}: {acc.item() * 100:4.1f} %")
+    raw_advs, clipped_advs, success = attack(foolbox_model, image, label, epsilons=epsilons)
+    print(success)
+    for i in range(len(epsilons)):
+        print('-'*10)
+        print("Episolon:", epsilons[i])
+        print('-'*10)
+        raw = raw_advs[i]
+        clipped = clipped_advs[i]
 
-    # # we can also manually check this
-    # # we will use the clipped advs instead of the raw advs, otherwise
-    # # we would need to check if the perturbation sizes are actually
-    # # within the specified epsilon bound
-    # print()
-    # print("we can also manually check this:")
-    # print()
-    # print("robust accuracy for perturbations with")
-    # for eps, advs_ in zip(epsilons, clipped_advs):
-    #     acc2 = accuracy(foolbox_model, advs_, labels)
-    #     print(f"  Linf norm ≤ {eps:<6}: {acc2 * 100:4.1f} %")
-    #     print("    perturbation sizes:")
-    #     perturbation_sizes = (advs_.cpu() - images.cpu()).numpy().max(axis=(1, 2, 3))
-    #     print("    ", str(perturbation_sizes).replace("\n", "\n" + "    "))
-    #     if acc2 == 0:
-    #         break
+        output = model(clipped)
+        _, preds = torch.max(output.data, 1)
+        print(preds.item())
+        difference = clipped - raw
+
+        difference = difference.squeeze(0)
+
+        norm_inf = torch.linalg.norm(difference, ord=float('inf'), dim=(1,2))
+        norm_1 = torch.linalg.norm(difference, ord=1, dim=(1,2))
+        norm_2 = torch.linalg.norm(difference, ord=2, dim=(1,2))
+        print("Infinity (inf) norm: {} {} {}".format(norm_inf[0], norm_inf[1], norm_inf[2]))
+        print("Manhattan (L1) norm: {} {} {}".format(norm_1[0], norm_1[1], norm_1[2]))
+        print("Euclidean (L2) norm: {} {} {}".format(norm_2[0], norm_2[1], norm_2[2]))
+
+
 
 
 if __name__ == "__main__":

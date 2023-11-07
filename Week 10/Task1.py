@@ -2,7 +2,8 @@ import torch
 import torchvision.models as models
 from PIL import Image
 import torchvision.transforms as transforms
-from torchvision.utils import save_image
+
+torch.manual_seed(0)
 
 def loadimage2tensor(nm, resize=300, mean= [0.485, 0.456, 0.406] , std = [0.229, 0.224, 0.225]):
     image = Image.open(nm).convert('RGB')
@@ -21,7 +22,7 @@ def invert_normalize(tensor, mean=[0.485, 0.456, 0.406] , std=[0.229, 0.224, 0.2
     return tensor
 
 
-device = torch.device("mps")
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 imorig = loadimage2tensor('mrshout2.jpg').unsqueeze(0).to(device)
 targetclass = 949
 stepsize = 0.01
