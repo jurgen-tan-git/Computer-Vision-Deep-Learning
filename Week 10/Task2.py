@@ -7,7 +7,7 @@ the robust accuracy.
 import torchvision.models as models
 import eagerpy as ep
 from foolbox import PyTorchModel, accuracy, samples
-from foolbox.attacks import FGSM, LinfPGD
+from foolbox.attacks.boundary_attack import BoundaryAttack
 import torch
 from PIL import Image
 import torchvision.transforms as transforms
@@ -15,10 +15,10 @@ import torchvision.transforms as transforms
 
 def main() -> None:
     # instantiate a model (could also be a TensorFlow or JAX model)
-    device = torch.device("cuda:0")
+    device = torch.device("cpu")
     model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT).to(device).eval()
-    preprocessing = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], axis=-3)
-    foolbox_model = PyTorchModel(model, bounds=(0, 1), preprocessing=preprocessing)
+    # preprocessing = dict(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225], axis=-3)
+    foolbox_model = PyTorchModel(model, bounds=(0, 1))
 
     # get data and test the model
     # wrapping the tensors with ep.astensors is optional, but it allows
@@ -34,11 +34,8 @@ def main() -> None:
     print(images.shape)
     labels = torch.tensor([949]).to(device)
 
-    clean_acc = accuracy(foolbox_model, images, labels)
-    print(f"clean accuracy:  {clean_acc * 100:.1f} %")
-
     # apply the attack
-    attack = FGSM()
+    attack = BoundaryAttack()
     epsilons = [
         0.0,
         0.0002,

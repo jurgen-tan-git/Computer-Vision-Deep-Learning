@@ -11,25 +11,25 @@ def loadimage2tensor(nm, resize=300, mean= [0.485, 0.456, 0.406] , std = [0.229,
     image = transforms.Normalize(mean, std)(image)
     return image
 
-def invert_normalize(tensor, mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]):
-    # Create a copy of the tensor to avoid modifying the original
-    inverted_tensor = tensor.clone()
+def invert_normalize(tensor, mean=[0.485, 0.456, 0.406] , std=[0.229, 0.224, 0.225]):
 
-    for t, m, s in zip(inverted_tensor[0], mean, std):
-        t.mul_(s).add_(m)
+    tensor = tensor.clone()
 
-    return inverted_tensor
+    for i in range(3):  # Loop over the three color channels
+        tensor[:, i, :, :].mul_(std[i]).add_(mean[i])
+
+    return tensor
 
 
-
-device = torch.device("cuda:0")
+device = torch.device("mps")
 imorig = loadimage2tensor('mrshout2.jpg').unsqueeze(0).to(device)
-
 targetclass = 949
-stepsize = 1
+stepsize = 0.01
 count = 0
 
-model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT).to(device).eval()
+model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT).to(device)
+model.eval()
+
 with torch.no_grad():
     outputs = model(imorig)
     _, preds = torch.max(outputs.data, 1)
@@ -53,24 +53,23 @@ while currentprediction!=targetclass:
     tobechanged.grad[(unscaledimage<1./255.0)|(unscaledimage > 254./255.0)]=0 #set grad to zero where it would get out of bounds
     tobechanged.data+=stepsize * tobechanged.grad #apply gradient descent
     
-    tensor_image = invert_normalize(tobechanged.data)
-    save_image(tensor_image[0], 'output_image.jpg')
-
     tobechanged.grad.zero_() # erase used gradient
 
-    outputs = model(tobechanged) # update prediction
-
-
-
+    
 
     with torch.no_grad():
+        outputs = model(tobechanged) # update prediction
         _, preds = torch.max(outputs.data, 1)
         print('in iter',preds.item(), outputs.data[0,preds[0].item()].item(),outputs.data[0,targetclass].item())
     currentprediction = preds[0].item()
 
+tensor_image = invert_normalize(tobechanged)
+transforms.ToPILImage()(tensor_image.squeeze(0)).save('output_image.png')
+
 print("Iterations taken", count)
 
-image = loadimage2tensor('output_image.jpg').unsqueeze(0).to(device)
+image = loadimage2tensor('output_image.png').unsqueeze(0).to(device)
+# outputs = model(transforms.Normalize( [0.485, 0.456, 0.406] ,[0.229, 0.224, 0.225])(tensor_image))
 outputs = model(image)
 _, preds = torch.max(outputs.data, 1)
 print(outputs.data[0,preds[0].item()],preds.item())
