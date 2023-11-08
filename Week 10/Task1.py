@@ -13,18 +13,15 @@ def loadimage2tensor(nm, resize=300, mean= [0.485, 0.456, 0.406] , std = [0.229,
     return image
 
 def invert_normalize(tensor, mean=[0.485, 0.456, 0.406] , std=[0.229, 0.224, 0.225]):
-
     tensor = tensor.clone()
-
     for i in range(3):  # Loop over the three color channels
         tensor[:, i, :, :].mul_(std[i]).add_(mean[i])
-
     return tensor
 
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+device = torch.device("mps" if torch.cuda.is_available() else "cpu")
 imorig = loadimage2tensor('mrshout2.jpg').unsqueeze(0).to(device)
-targetclass = 949
+targetclass = 949 # 949 is the class for 'Strawberry'
 stepsize = 0.01
 count = 0
 
@@ -65,12 +62,11 @@ while currentprediction!=targetclass:
     currentprediction = preds[0].item()
 
 tensor_image = invert_normalize(tobechanged)
-transforms.ToPILImage()(tensor_image.squeeze(0)).save('output_image.png')
+transforms.ToPILImage()(tensor_image.squeeze(0)).save('Task1_output_image.png')
 
 print("Iterations taken", count)
 
-image = loadimage2tensor('output_image.png').unsqueeze(0).to(device)
-# outputs = model(transforms.Normalize( [0.485, 0.456, 0.406] ,[0.229, 0.224, 0.225])(tensor_image))
+image = loadimage2tensor('Task1_output_image.png').unsqueeze(0).to(device)
 outputs = model(image)
 _, preds = torch.max(outputs.data, 1)
 print(outputs.data[0,preds[0].item()],preds.item())
