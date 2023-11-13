@@ -32,33 +32,26 @@ def main() -> None:
     # apply the attack
     attack = BoundaryAttack(step_adaptation=0.5 , steps=250)
     epsilons = [
-        0.0,
-        0.0002,
-        0.0005,
-        0.0008,
-        0.001,
-        0.0015,
-        0.002,
-        0.003,
-        0.01,
-        0.1,
-        0.3,
-        0.5,
-        1.0,
-        100
+        0,
+        1,
+        10,
+        50,
+        100,
+        500,
+        1000
     ]
     raw_advs, clipped_advs, success = attack(foolbox_model, image, label, epsilons=epsilons)
-    print(success)
     for i in range(len(epsilons)):
         print('-'*10)
         print("Episolon:", epsilons[i])
         print('-'*10)
         raw = raw_advs[i]
         clipped = clipped_advs[i]
+        transforms.ToPILImage()(clipped.squeeze(0)).save("Task2_output_image_{}.png".format(epsilons[i]))
 
         output = model(clipped)
         _, preds = torch.max(output.data, 1)
-        print(preds.item())
+        print("Predicted Class: ",preds.item())
         difference = clipped - raw
 
         difference = difference.squeeze(0)
